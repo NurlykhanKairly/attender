@@ -14,7 +14,8 @@ const firebaseConfig = {
   projectId: "attender-c6e24",
   storageBucket: "attender-c6e24.appspot.com",
   messagingSenderId: "237919210485",
-  appId: "1:237919210485:web:21872c818ed62283ea6ebc"
+  appId: "1:237919210485:web:21872c818ed62283ea6ebc",
+  databaseURL: "https://attender-c6e24-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
 // Initialize Firebase
