@@ -1,0 +1,39 @@
+.green_day, .grey_day, .red_day, .day, .yellow_day{
+    color:black;
+    height:131px;
+    width:159px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+}
+.green_day{
+    background-color: #E7EDBC;
+}
+.yellow_day{
+    background-color: #FFEA7B;
+}
+.red_day{
+    background-color: #DB4D58;
+}
+.grey_day{
+    background-color: #F3F3F3;
+}
+.cell{
+    border: #DBDDE0 solid 1px;
+    border-collapse: collapse;
+}
+.calendar{
+    width: 1113px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.page{
+    width:100%;
+}
+.head{
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+}
+.month{
+    font-size: 26px;
+    font-family: 'Roboto', sans-serif;
+}
