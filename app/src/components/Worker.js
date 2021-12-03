@@ -1,19 +1,64 @@
-import React from "react";
+import React, {useState} from "react";
 import '../css/Calendar.css';
 import Calendar from './Calendar';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import EditIcon from '@mui/icons-material/Edit';
+import { getDatabase, ref, onValue, } from "firebase/database";
+
 const Worker = () => {
     const id = 'WvmCUa3IzqSbVJ1Lhe7V4HWUPg32';
-    const month = '12'
+    let today = new Date();
+    const month = 11;
     const month_names = ["January", "February", "March", "April", "May", "June", 
         "July", "August", "September", "October", "November", "December"]
+
+    //loading firebase
+    const db = getDatabase();
+    const info_ref = ref(db, `additional_info`);
+    const [data, setData] = useState(0);
+    if(data === 0){
+        onValue(info_ref, (snap) =>{
+            const val = snap.val();
+            setData(val);
+        })
+    }
+    let extreme_temp = 0;
+    let start_time;
+    let end_time;
+    if(data !== undefined && data !== 0){
+        extreme_temp = data['extreme_temp'];
+        start_time = data['working_from'];
+        end_time = data['working_to']
+    }
+        
     return(
         <div class = "page">
-            <div className="month">
-                
-                {month_names[month - 2]}
+            <div class = "settings">
+                <div class="setting">
+                    <div>
+                        Working time: {start_time}-{end_time}
+                    </div>
+                    <div>
+                        <EditIcon/>
+                    </div>
+                </div>
+                <div className="month">
+                    <ArrowBackIosIcon/>
+                    {month_names[(month-1)%12]}
+                    <ArrowForwardIosIcon/>
+                </div>
+                <div class="setting">
+                    <div>
+                        Extreme Temperature: {extreme_temp}°C 
+                    </div>
+                    <div>
+                        <EditIcon/>
+                    </div>
+                </div>
             </div>
             <div class = "calendar">
-                <Calendar year='2021' month={month} id={id}/>
+                <Calendar year='2021' month={(month)} id={id}/>
             </div>
         </div>
     )
