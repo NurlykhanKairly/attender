@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import { getDatabase, set, ref } from '@firebase/database';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -25,7 +26,7 @@ if (firebase.apps.length === 0) {
 
 const auth = new firebase.auth();
 const db = firebase.firestore();
-
+const db2 = getDatabase();
 const signInWithEmailAndPassword = async (email, password) => {
     try {
         await auth.signInWithEmailAndPassword(email, password);
@@ -45,6 +46,14 @@ const registerWithEmailAndPassword = async (name, email, password) => {
             name,
             authProvider: "local",
             email
+        })
+        await set(ref(db2, `workers/${user.uid}`), {
+            name,
+            email,
+            photo: "",
+            position: "",
+            role: 'worker'
+
         })
     } catch (err) {
         console.error(err);
