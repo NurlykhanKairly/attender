@@ -6,10 +6,44 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, set} from "firebase/database";
-import { height } from "@mui/system";
+import { auth } from '../firebase';
+import { useNavigate } from "react-router-dom";
 
 const ManagerWorker = () => {
-    const id = 'WvmCUa3IzqSbVJ1Lhe7V4HWUPg32';
+    const db = getDatabase();
+
+    // Authenticate user
+    const [id, setId] = useState('');
+    const [isManager, setIsManager] = useState(false);
+    const navigate = useNavigate();
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            console.log('authenticated! ' + user.uid);
+            
+            
+          // User logged in already or has just logged in.
+        } else {
+            navigate('/login');
+          // User not logged in or has just logged out.
+        }
+      });
+    const user = auth.currentUser;
+    if(!isManager && user !== null && user !== undefined){
+        onValue(ref(db, `workers/${user.uid}/role`), (snap) => {
+            if(snap.val() === 'manager'){
+                setIsManager(true);
+            }
+            else{
+                navigate('/worker');
+            }
+        })
+    }
+    if(id === '' && user){
+        setId(user.uid);
+        console.log('updated ' + id);
+    }
+    console.log('updated ' + id);
+    
     let today = new Date();
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);
@@ -17,7 +51,6 @@ const ManagerWorker = () => {
         "July", "August", "September", "October", "November", "December"]
 
     //loading firebase
-    const db = getDatabase();
     const info_ref = ref(db, `additional_info`);
     const [data, setData] = useState(0);
     if(data === 0){
@@ -121,7 +154,7 @@ const ManagerWorker = () => {
                 </div>
             </div>
             <div class = "calendar">
-                <Calendar year='2021' month={(month)} id={id}/>
+                <Calendar year={year} month={(month)} id={id}/>
             </div>
         </div>
     )

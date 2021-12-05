@@ -48,8 +48,8 @@ const Calendar = (props) => {
     let current_day_str = `${current_day.getDate()}-${current_day.getMonth()}-${current_day.getFullYear()}`;
     for(let i = 0; i < 35; i++){
         current_day_str = `${('0' + current_day.getDate()).slice(-2)}-${('0' + (current_day.getMonth()+1)).slice(-2)}-${current_day.getFullYear()}`;
-
-        if(data !== undefined && data[current_day_str] !== undefined){
+        
+        if(data !== undefined && data !== null && data[current_day_str] !== undefined && data[current_day_str] !== null){
             //day found at attendance
             if(data[current_day_str].timestamp !== "" && data[current_day_str].timestamp <= starting_time){
                 days.push({date: current_day.getDate(), time: data[current_day_str].timestamp, status: "onTime"});

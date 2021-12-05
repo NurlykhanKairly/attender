@@ -5,14 +5,33 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, } from "firebase/database";
+import { auth } from '../firebase';
+import { useNavigate } from "react-router-dom";
 
 const Worker = () => {
-    const id = 'WvmCUa3IzqSbVJ1Lhe7V4HWUPg32';
     let today = new Date();
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);
     const month_names = ["January", "February", "March", "April", "May", "June", 
         "July", "August", "September", "October", "November", "December"]
+    // Authenticate the user
+    const navigate = useNavigate();
+    const [id, setId] = useState('');
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            console.log('authenticated! ' + user.uid);
+            
+          // User logged in already or has just logged in.
+        } else {
+            navigate('/login');
+          // User not logged in or has just logged out.
+        }
+      });
+    const user = auth.currentUser;
+    if(id === '' && user){
+        setId(user.uid);
+        console.log('updated');
+    }
 
     //loading firebase
     const db = getDatabase();

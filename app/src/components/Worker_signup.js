@@ -6,12 +6,12 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { create } from '@mui/material/styles/createTransitions';
 
 export default function WorkerSignup() {
-    const auth = getAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [fullName, setFullName] = useState("");
     const [code, setCode] = useState("");
+    const [position, setPosition] = useState("");
 
     return (
         <div className="auth-wrapper">  
@@ -34,6 +34,15 @@ export default function WorkerSignup() {
                             className="form-control" 
                             placeholder="Enter group code"
                             onChange={(e) => setCode(e.target.value)}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Position</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            placeholder="Enter your position"
+                            onChange={(e) => setPosition(e.target.value)}
                         />
                     </div>
                     <div className="form-group">
@@ -62,7 +71,7 @@ export default function WorkerSignup() {
                             className="btn btn-primary btn-block"
                             onClick={(e) => {
                                 e.preventDefault();
-                                registerWithEmailAndPassword(fullName, email, password);
+                                registerWithEmailAndPassword(fullName, position, email, password);
                                 navigate('/login');
                             }}
                         >

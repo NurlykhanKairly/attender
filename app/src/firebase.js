@@ -37,7 +37,7 @@ const signInWithEmailAndPassword = async (email, password) => {
     }
 };
 
-const registerWithEmailAndPassword = async (name, email, password) => {
+const registerWithEmailAndPassword = async (name, position, email, password) => {
     try {
         const res = await auth.createUserWithEmailAndPassword(email, password);
         const user = res.user;
@@ -51,9 +51,9 @@ const registerWithEmailAndPassword = async (name, email, password) => {
             name,
             email,
             photo: "",
-            position: "",
-            role: 'worker'
-
+            position,
+            role: 'worker',
+            attendance:{}
         })
     } catch (err) {
         console.error(err);
