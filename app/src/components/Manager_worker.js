@@ -19,12 +19,9 @@ const ManagerWorker = () => {
     auth.onAuthStateChanged((user) => {
         if (user) {
             console.log('authenticated! ' + user.uid);
-            
-            
-          // User logged in already or has just logged in.
-        } else {
+        } 
+        else {
             navigate('/login');
-          // User not logged in or has just logged out.
         }
       });
     const user = auth.currentUser;
