@@ -9,7 +9,8 @@ import { getDatabase, ref, onValue, } from "firebase/database";
 const Worker = () => {
     const id = 'WvmCUa3IzqSbVJ1Lhe7V4HWUPg32';
     let today = new Date();
-    const month = 11;
+    const [year, setYear] = useState(today.getFullYear());
+    const [month, setMonth] = useState(today.getMonth() + 1);
     const month_names = ["January", "February", "March", "April", "May", "June", 
         "July", "August", "September", "October", "November", "December"]
 
@@ -29,36 +30,41 @@ const Worker = () => {
     if(data !== undefined && data !== 0){
         extreme_temp = data['extreme_temp'];
         start_time = data['working_from'];
-        end_time = data['working_to']
+        end_time = data['working_to'];
     }
         
     return(
         <div class = "page">
-            <div class = "settings">
-                <div class="setting">
-                    <div>
-                        Working time: {start_time}-{end_time}
-                    </div>
-                    <div>
-                        <EditIcon/>
-                    </div>
-                </div>
                 <div className="month">
-                    <ArrowBackIosIcon/>
+                    <div onClick={() => {
+                        if(month - 1 < 1){
+                            setYear(year - 1);
+                            setMonth((month + 11));
+                        }
+                        else{
+                            setMonth((month - 1));
+                        }
+                    }
+                    }>
+                        <ArrowBackIosIcon/>
+                    </div>
+                    
                     {month_names[(month-1)%12]}
-                    <ArrowForwardIosIcon/>
-                </div>
-                <div class="setting">
-                    <div>
-                        Extreme Temperature: {extreme_temp}°C 
+
+                    <div onClick={() => {
+                        if(month + 1 > 12){
+                            setYear(year + 1);
+                            setMonth((month - 11));
+                        }
+                        else{
+                            setMonth((month + 1));
+                        }
+                    } }>
+                        <ArrowForwardIosIcon/>
                     </div>
-                    <div>
-                        <EditIcon/>
-                    </div>
                 </div>
-            </div>
             <div class = "calendar">
-                <Calendar year='2021' month={(month)} id={id}/>
+                <Calendar year={year} month={(month)} id={id}/>
             </div>
         </div>
     )

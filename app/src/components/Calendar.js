@@ -5,7 +5,6 @@ import { getDatabase, ref, onValue, } from "firebase/database";
 
 
 const Calendar = (props) => {
-    const starting_time = "09:00"
 
     //get first monday
     const first = `${props.year}-${props.month}-1`;
@@ -21,6 +20,7 @@ const Calendar = (props) => {
     const db = getDatabase();
     const attendance_ref = ref(db, `workers/${id}/attendance`);
     const dayoffs_ref = ref(db, `dayoffs`);
+    const starting_time_ref = ref(db, 'additional_info/working_from');
     const [data, setData] = useState(0); 
     if(data===0){
         onValue(attendance_ref, (snap) =>{ 
@@ -33,6 +33,13 @@ const Calendar = (props) => {
         onValue(dayoffs_ref, (snap) => {
             const val = snap.val();
             setDayoffs(val);
+        })
+    }
+    const [starting_time, setStarting_time] = useState(0);
+    if(starting_time===0){
+        onValue(starting_time_ref, (snap) => {
+            const val = snap.val();
+            setStarting_time(val);
         })
     }
 
