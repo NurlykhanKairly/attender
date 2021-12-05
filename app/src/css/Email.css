@@ -1,0 +1,14 @@
+.email-form {
+    align-items: left;
+    text-align: left;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    display: table; 
+    border-collapse:separate; 
+    border-spacing:1em;
+}
+
+p     { display: table-row; }
+label { display: table-cell; }
+input { display: table-cell; }
