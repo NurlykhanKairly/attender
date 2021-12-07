@@ -3,6 +3,7 @@ import { getDatabase, set, ref } from '@firebase/database';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { getDatabase } from 'firebase/database';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -20,13 +21,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+let app = null;
 if (firebase.apps.length === 0) {
-    firebase.initializeApp(firebaseConfig);
+    app = firebase.initializeApp(firebaseConfig);
+} else {
+    app = firebase.apps[0];
 }
 
 const auth = new firebase.auth();
-const db = firebase.firestore();
-const db2 = getDatabase();
+const db = getDatabase(app);
+
 const signInWithEmailAndPassword = async (email, password) => {
     try {
         await auth.signInWithEmailAndPassword(email, password);
@@ -47,7 +51,7 @@ const registerWithEmailAndPassword = async (name, position, email, password) => 
             authProvider: "local",
             email
         })
-        await set(ref(db2, `workers/${user.uid}`), {
+        await set(ref(db, `workers/${user.uid}`), {
             name,
             email,
             photo: "",
