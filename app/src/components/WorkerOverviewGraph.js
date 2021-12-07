@@ -1,8 +1,22 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import '../css/WorkerOverviewGraph.css';
+import { getYMD } from '../helpers';
+import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 
-export default function WorkerOverviewGraph({workerData}) {
+
+const HtmlTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      maxWidth: 220,
+      border: '1px solid #f5f5f9',
+    },
+}));
+
+export default function WorkerOverviewGraph({workerData, dayoffs, additionalInfo}) {
     
     let finishDate = new Date();
     finishDate.setMonth(finishDate.getMonth() + 1);
@@ -17,15 +31,13 @@ export default function WorkerOverviewGraph({workerData}) {
     let monthBlocks = [];
     let cur = [];
     let prev = null;
-    
-    console.log(startDate.toLocaleDateString(), finishDate.toLocaleDateString());
+    let lates = 0;
+    let misses = 0;
 
-    for(let d = startDate; d <= finishDate; d.setDate(d.getDate() + 1)) {
-        if(prev) {
-            console.log(prev.getMonth(), d.getMonth());
-        }
+    // console.log(startDate.toLocaleDateString(), finishDate.toLocaleDateString());
+
+    for(let d = new Date(startDate.getTime()); d <= finishDate; d.setDate(d.getDate() + 1)) {
         if(prev !== null && prev.getMonth() != d.getMonth()) {
-            console.log('hello?');
             monthBlocks.push(
                 <div className="month-block-container" key={monthBlocks.length}>
                     <p style={{width:50}}> {prev.toLocaleString('default', {month: 'short'})} </p>
@@ -36,12 +48,62 @@ export default function WorkerOverviewGraph({workerData}) {
             );
             cur = [];
         } 
+
+
+        let className = "mini-square";
+        let key = getYMD(d);
+        let shift = ((d.getDay() - 1 + 7) % 7) + 1; // 1 - Monday, ... 7 - Sunday
+        let today = new Date();
+        let text = '';
+        if(shift <= 5 && (!dayoffs[key]) && d <= today) {
+            if(workerData.attendance[key]) {
+                if(workerData.attendance[key].time <= additionalInfo.working_from) {
+                    className += ' mini-square-green';
+                } else {
+                    className += ' mini-square-yellow';
+                    lates ++;
+                }
+                text = `Check-in: ${workerData.attendance[key].time}`;
+            } else {
+                className += ' mini-square-red';
+                misses ++;
+                text = 'Missed';
+            }
+        } else if(shift > 5) {
+            text = 'Weekend';
+        } else if(dayoffs[key]) {
+            text = `Dayoff: ${dayoffs[key]}`;
+        }
+
+        
         if(cur.length === 0) {
-            let shift = ((d.getDay() - 1 + 7) % 7) + 1;
-            console.log("shift", shift, "day: ", d.toLocaleString('default', {weekday: 'long'}));
-            cur.push(<div className="mini-square" key={cur.length} style={{gridColumnStart: shift}} /> );
+            cur.push(
+                <HtmlTooltip
+                    disableInteractive
+                    title={
+                    <React.Fragment>
+                        <p> {`${d.toLocaleString('default', {month: 'long'})} ${d.getDate()}`} </p>
+                        <p> {text} </p>
+                    </React.Fragment>
+                    }
+                >
+                    <div className={className} key={cur.length} style={{gridColumnStart: shift}} />
+                </HtmlTooltip> 
+            );
         } else {
-            cur.push(<div className="mini-square"  key={cur.length} />);
+            cur.push(
+                <HtmlTooltip
+                    disableInteractive
+                    title={
+                    <React.Fragment>
+                        <p> {`${d.toLocaleString('default', {month: 'long'})} ${d.getDate()}`} </p>
+                        <p> {text} </p>
+                    </React.Fragment>
+                    }
+                >
+                    <div className={className} key={cur.length} />
+                </HtmlTooltip> 
+            );
         }
         prev = new Date(d.getTime());
     }
@@ -55,7 +117,6 @@ export default function WorkerOverviewGraph({workerData}) {
             </div>
         );
     }
-    console.log(monthBlocks);
     return (
         <div className="worker-overview-graph">
             <div className="worker-information">
@@ -64,8 +125,8 @@ export default function WorkerOverviewGraph({workerData}) {
                     <p> {workerData.position} </p>
                     <p> {workerData.name} </p>
                     <div className="late-missed">
-                        <p className="late-text"> 4 late </p>
-                        <p className="miss-text"> 3 missed </p>
+                        <p className="late-text"> {lates} late </p>
+                        <p className="miss-text"> {misses} missed </p>
                     </div>
                 </div>
             </div>

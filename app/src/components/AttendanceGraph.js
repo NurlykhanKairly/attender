@@ -1,30 +1,48 @@
 import React from 'react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import '../css/AttendanceGraph.css';
+import { getYMD } from '../helpers';
 
 
-export default function AttendanceGraph({workers}) {
+export default function AttendanceGraph({workers, dayoffs, additionalInfo}) {
     let data = [];
 
-    let finishDate = new Date();
-    finishDate.setMonth(finishDate.getMonth() + 1);
-    finishDate.setDate(0);
+    let today = new Date();
     let startDate = new Date();
-    startDate.setMonth(finishDate.getMonth() - 2);
+    startDate.setMonth(today.getMonth() - 2);
     startDate.setDate(1);
-
-    console.log(startDate.toLocaleDateString());
-    console.log(finishDate.toLocaleDateString());
 
     let ticks = [];
     let i = 0;
 
-    for(let d = startDate; d <= finishDate; d.setDate(d.getDate() + 1)) {
+    for(let d = new Date(startDate.getTime()); d <= today; d.setDate(d.getDate() + 1)) {
         // console.log(d.toLocaleDateString());
+        if(d.getDay() === 0 || d.getDay() === 6) 
+            continue;        
+
+        let key = getYMD(d);
+        
+        if(dayoffs[key])
+            continue;
+
+        let misses = 0, totalWorkers = 0;
+        for(let workerKey in workers) {
+            console.log(workers[workerKey]);
+            if(workers[workerKey].attendance && (!workers[workerKey].attendance[key])) {
+                misses ++;
+            }
+            if(workers[workerKey].role !== "manager") {
+                totalWorkers ++;
+            }
+        }
+
+        console.log(key, misses);
+
         data.push({
             name: `${d.toLocaleString('default', {month: 'long'})} ${d.getDate()}`,
-            rate: (Math.round(Math.random() * 100))
+            rate: (((totalWorkers - misses) / Math.max(1, totalWorkers)) * 100)
         });
+
         if(d.getDate() == 1)
             ticks.push(i);
         i += 1;

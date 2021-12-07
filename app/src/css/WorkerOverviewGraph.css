@@ -49,6 +49,7 @@
     width: 100%;
     justify-content: center;
     margin-left: 10px;
+    text-align: center;
 }
 
 /* .name-of-day-of-week:first-child {
@@ -75,4 +76,16 @@
     border-radius: 5px;
     height: 35px; 
     width: 35px;
+}
+
+.mini-square-green {
+    background-color: #E7EDBC;
+}
+
+.mini-square-yellow {
+    background-color: #FFEA7B;
+}
+
+.mini-square-red {
+    background-color: #E17882;
 }

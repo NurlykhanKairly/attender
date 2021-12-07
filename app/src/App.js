@@ -10,6 +10,7 @@ import Frame21 from "./components/Frame21";
 import Frame22 from "./components/Frame22";
 import Frame27 from "./components/Frame27";
 import Dashboard from "./components/Dashboard";
+import GenerateRandomAttendanceData from "./components/GenerateRandomAttendanceData";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
             <Route path="/frame21" element={<Frame21 />} />
             <Route path="/frame22" element={<Frame22 />} />
             <Route path="/frame27" element={<Frame27 />} />
+            <Route path="/generate-random-attendance" element={<GenerateRandomAttendanceData />} />
+            
           </Routes>
         </div>
       </Router>
