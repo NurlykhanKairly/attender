@@ -1,0 +1,15 @@
+.attendance-graph-responsive-container {
+    border: 1px solid;
+    border-color: #37447E;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #f6f8fa;
+}
+
+.graph-title {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}

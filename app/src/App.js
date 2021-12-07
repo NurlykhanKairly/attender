@@ -9,6 +9,7 @@ import Frame20 from "./components/Frame20";
 import Frame21 from "./components/Frame21";
 import Frame22 from "./components/Frame22";
 import Frame27 from "./components/Frame27";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
       <Router>
         <div className="App">
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/home" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/email" element={<Email />} />
             <Route path="/frame19" element={<Frame19 />} />
