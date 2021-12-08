@@ -6,7 +6,7 @@ const Day = (props) => {
     switch(props.status){
         case "onTime":
             return(
-                <div class='green_day'>
+                <div className='green_day'>
                     <div>{day}</div>
                     <div>Check in</div>
                     <div style={{fontSize: '24px'}}>{props.time}</div>
@@ -14,7 +14,7 @@ const Day = (props) => {
             );
         case "late":
             return(
-                <div class='yellow_day'>
+                <div className='yellow_day'>
                     <div>{day}</div>
                     <div>Check in</div>
                     <div style={{fontSize: '24px'}}>{props.time}</div>
@@ -22,7 +22,7 @@ const Day = (props) => {
             )
         case "absent":
             return(
-                <div class='red_day'>
+                <div className='red_day'>
                     <div>{day}</div>
                     <div>Reason</div>
                     <div style={{fontSize: '24px'}}>{props.reason}</div>
@@ -30,7 +30,7 @@ const Day = (props) => {
             )
         case "dayOff":
             return(
-                <div class='grey_day'>
+                <div className='grey_day'>
                     <div>{day}</div>
                     <div></div>
                     <div style={{fontSize: '24px'}}>{props.reason}</div>
@@ -38,7 +38,7 @@ const Day = (props) => {
             )
         default:
             return(
-                <div class='day'>
+                <div className='day'>
                     <div>{day}</div>
                     <div></div>
                     <div>{props.time}</div>
