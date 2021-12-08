@@ -14,27 +14,33 @@ import Frame22 from "./components/Frame22";
 import Frame27 from "./components/Frame27";
 import Dashboard from "./components/Dashboard";
 import GenerateRandomAttendanceData from "./components/GenerateRandomAttendanceData";
+import Header from './components/Header';
+import Footer from './components/Footer';
+
 
 function App() {
   return (
     <>
       <Router>
         <div className="App">
-          <Routes>
-            <Route path="/home" element={<Dashboard />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/email" element={<Email />} />
-            <Route path="/worker" element={<Worker/>}/>
-            <Route path="/manager-worker" element={<ManagerWorker/>}/>
-            <Route path="/signup" element={<WorkerSignup/>}/>
-            <Route path="/frame19" element={<Frame19 />} />
-            <Route path="/frame20" element={<Frame20 />} />
-            <Route path="/frame21" element={<Frame21 />} />
-            <Route path="/frame22" element={<Frame22 />} />
-            <Route path="/frame27" element={<Frame27 />} />
-            <Route path="/generate-random-attendance" element={<GenerateRandomAttendanceData />} />
-            
-          </Routes>
+          <Header />
+          <div className="main-content">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<WorkerSignup/>}/>
+              <Route path="/home" element={<Dashboard />} />
+              <Route path="/email" element={<Email />} />
+              <Route path="/worker" element={<Worker/>}/>
+              <Route path="/manager-worker" element={<ManagerWorker/>}/>
+              <Route path="/frame19" element={<Frame19 />} />
+              <Route path="/frame20" element={<Frame20 />} />
+              <Route path="/frame21" element={<Frame21 />} />
+              <Route path="/frame22" element={<Frame22 />} />
+              <Route path="/frame27" element={<Frame27 />} />
+              <Route path="/generate-random-attendance" element={<GenerateRandomAttendanceData />} />
+            </Routes>
+          </div>
+          <Footer />
         </div>
       </Router>
     </>
