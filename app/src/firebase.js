@@ -3,7 +3,6 @@ import { getDatabase, set, ref } from '@firebase/database';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { getDatabase } from 'firebase/database';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -34,7 +33,6 @@ const db = getDatabase(app);
 const signInWithEmailAndPassword = async (email, password) => {
     try {
         await auth.signInWithEmailAndPassword(email, password);
-        alert('Successful Login!')
     } catch (err) {
         console.error(err);
         alert(err.message);

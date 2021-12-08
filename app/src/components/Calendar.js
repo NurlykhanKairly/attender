@@ -43,19 +43,26 @@ const Calendar = (props) => {
         })
     }
 
+    console.log(data);
+
     //fill days array with 35 days to display on the screen
     let days = [];   
     let current_day_str = `${current_day.getDate()}-${current_day.getMonth()}-${current_day.getFullYear()}`;
+    let today = new Date();
     for(let i = 0; i < 35; i++){
-        current_day_str = `${('0' + current_day.getDate()).slice(-2)}-${('0' + (current_day.getMonth()+1)).slice(-2)}-${current_day.getFullYear()}`;
-        
-        if(data !== undefined && data !== null && data[current_day_str] !== undefined && data[current_day_str] !== null){
+        current_day_str = `${current_day.getFullYear()}-${('0' + (current_day.getMonth()+1)).slice(-2)}-${('0' + current_day.getDate()).slice(-2)}`;
+        if(id === ''){
+            days.push({date: current_day.getDate(), time: "", status: ""});
+            current_day.setDate(current_day.getDate() + 1);
+            continue;
+        }
+        if(data !== undefined && data !== null && data[current_day_str] !== undefined && data[current_day_str] !== null && i % 7 < 5){
             //day found at attendance
-            if(data[current_day_str].timestamp !== "" && data[current_day_str].timestamp <= starting_time){
-                days.push({date: current_day.getDate(), time: data[current_day_str].timestamp, status: "onTime"});
+            if(data[current_day_str].time !== "" && data[current_day_str].time <= starting_time){
+                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "onTime"});
             }
-            else if(data[current_day_str].timestamp !== ""){
-                days.push({date: current_day.getDate(), time: data[current_day_str].timestamp, status: "late"});
+            else if(data[current_day_str].time !== ""){
+                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "late"});
             }
             else{
                 days.push({date: current_day.getDate(), time: "", status: "absent", reason: data[current_day_str].Reason});
@@ -70,7 +77,9 @@ const Calendar = (props) => {
                 //saturday and sunday
                 days.push({date: current_day.getDate(), time: "", status: "dayOff"});
             }
-            else{
+            else if(current_day <= today) {
+                days.push({date: current_day.getDate(), time: "", status: "absent", reason: ((data && data[current_day_str]) ? data[current_day_str].reason : '')});
+            } else {
                 days.push({date: current_day.getDate(), time: "", status: ""});
             }
         }
@@ -86,11 +95,9 @@ const Calendar = (props) => {
         );
         weeks.push(week);
     }
-    
-    
 
     return(
-        <div class = "calendar">
+        <div className = "calendar">
             <table>
                 <thead>
                     <tr>

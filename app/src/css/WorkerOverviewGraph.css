@@ -1,0 +1,91 @@
+.worker-overview-graph {
+    border: 1px solid;
+    border-color: #37447E;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #f6f8fa;
+}
+
+.worker-information {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.worker-information-text {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 7px;
+}
+
+.late-missed {
+    display: flex;
+
+}
+
+.late-text {
+    color: #FFEA7B;
+    font-size: 0.9em;
+    margin: 0;
+    margin-right: 20px;
+}
+
+.miss-text {
+    color: #E17882;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.name-of-container {
+    display: flex;
+}
+
+.names-of-day-of-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 20px;
+    width: 100%;
+    justify-content: center;
+    margin-left: 10px;
+    text-align: center;
+}
+
+/* .name-of-day-of-week:first-child {
+    grid-column-start: 2;
+} */
+
+.mini-squares-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 20px;
+    row-gap: 20px;
+    width: 100%;
+    margin-left: 10px;
+}
+
+.month-block-container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.mini-square {
+    background-color: #F3F3F3;
+    border-radius: 5px;
+    height: 1.7vw; 
+    width: 1.7vw;
+}
+
+.mini-square-green {
+    background-color: #E7EDBC;
+}
+
+.mini-square-yellow {
+    background-color: #FFEA7B;
+}
+
+.mini-square-red {
+    background-color: #E17882;
+}

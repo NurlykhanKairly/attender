@@ -53,7 +53,7 @@ const Worker = () => {
     }
         
     return(
-        <div class = "page">
+        <div className = "page">
                 <div className="month">
                     <div onClick={() => {
                         if(month - 1 < 1){
@@ -82,7 +82,7 @@ const Worker = () => {
                         <ArrowForwardIosIcon/>
                     </div>
                 </div>
-            <div class = "calendar">
+            <div className = "calendar">
                 <Calendar year={year} month={(month)} id={id}/>
             </div>
         </div>
