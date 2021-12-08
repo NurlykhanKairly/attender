@@ -75,29 +75,6 @@ const ManagerWorker = (props) => {
     return(
         <div class = "page">
             <div class = "settings">
-                <div class="setting" >
-                    Working time: 
-                    {!editTime ? (
-                    <div>
-                        {start_time}-{end_time}
-                    </div>) 
-                    : 
-                    <form style={{display: 'flex'}}>
-                        <input type='time' onChange={(event) => {setStTime(event.target.value)}}></input>
-                        -
-                        <input type='time' onChange={(event) => {setEndTime(event.target.value)}}></input>
-                    </form>}
-                    
-                    <div onClick = {() => {
-                        if(editTime){
-                            set(ref(db, 'additional_info/working_from'), stTime.toString());
-                            set(ref(db, 'additional_info/working_to'), endTime.toString());
-                        }
-                        setEditTime(!editTime);
-                    }}>
-                        <EditIcon/>
-                    </div>
-                </div>
                 <div className="month" style={{marginBottom: '10px'}}>
                     <div onClick={() => {
                         if(month - 1 < 1){
@@ -124,30 +101,6 @@ const ManagerWorker = (props) => {
                         }
                     } }>
                         <ArrowForwardIosIcon/>
-                    </div>
-                </div>
-                <div class="setting" style={{justifyContent: 'end'}}>
-                    <div>
-                        Extreme Temperature:
-                    </div>
-                    {!editTemp ? (
-                        <div style={{}}>
-                            {extreme_temp}°C 
-                        </div>
-                    )
-                    :
-                    (
-                        <form>
-                            <input type='number' style={{width: '50px'}} onChange={(event) => {setTemp(event.target.value)} }></input>
-                        </form>
-                    )}
-                    <div onClick = {() => {
-                        if(editTemp){
-                            set(ref(db, 'additional_info/extreme_temp'), temp);
-                        }
-                        setEditTemp(!editTemp);
-                    }}>
-                        <EditIcon/>
                     </div>
                 </div>
             </div>
