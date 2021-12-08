@@ -16,6 +16,7 @@ import Dashboard from "./components/Dashboard";
 import GenerateRandomAttendanceData from "./components/GenerateRandomAttendanceData";
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ManagerSettings from "./components/ManagerSettings";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
               <Route path="/frame22" element={<Frame22 />} />
               <Route path="/frame27" element={<Frame27 />} />
               <Route path="/generate-random-attendance" element={<GenerateRandomAttendanceData />} />
+              <Route path="/manager-settings" element={<ManagerSettings/>}/>
             </Routes>
           </div>
           <Footer />
