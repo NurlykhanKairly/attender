@@ -9,11 +9,12 @@ import { getDatabase, ref, onValue, set} from "firebase/database";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
 
-const ManagerWorker = () => {
+const ManagerWorker = (props) => {
     const db = getDatabase();
 
     // Authenticate user
     const [id, setId] = useState('');
+    const [idWorker, setIdWorker] = useState(props.id);
     const [isManager, setIsManager] = useState(false);
     const navigate = useNavigate();
     auth.onAuthStateChanged((user) => {
@@ -151,7 +152,7 @@ const ManagerWorker = () => {
                 </div>
             </div>
             <div class = "calendar">
-                <Calendar year={year} month={(month)} id={id}/>
+                <Calendar year={year} month={(month)} id={idWorker}/>
             </div>
         </div>
     )
