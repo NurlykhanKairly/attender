@@ -7,6 +7,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, } from "firebase/database";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
+import Frame20 from "./Frame20";
+import Frame19 from "./Frame19";
 
 const Worker = () => {
     let today = new Date();
@@ -51,7 +53,10 @@ const Worker = () => {
         start_time = data['working_from'];
         end_time = data['working_to'];
     }
-        
+
+    const body = (
+        <Frame20/>
+    )
     return(
         <div className = "page">
                 <div className="month">
@@ -83,7 +88,7 @@ const Worker = () => {
                     </div>
                 </div>
             <div className = "calendar">
-                <Calendar year={year} month={(month)} id={id}/>
+                <Calendar year={year} month={(month)} id={id} redDayPopup={(<Frame20/>)} greenDayPopup={(<Frame19/>)} />
             </div>
         </div>
     )

@@ -8,8 +8,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, set} from "firebase/database";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
+import Frame21 from "./Frame21";
 
 const ManagerWorker = (props) => {
+    
     const db = getDatabase();
 
     // Authenticate user
@@ -47,31 +49,10 @@ const ManagerWorker = (props) => {
     const [month, setMonth] = useState(today.getMonth() + 1);
     const month_names = ["January", "February", "March", "April", "May", "June", 
         "July", "August", "September", "October", "November", "December"]
-
-    //loading firebase
-    const info_ref = ref(db, `additional_info`);
-    const [data, setData] = useState(0);
-    if(data === 0){
-        onValue(info_ref, (snap) =>{
-            const val = snap.val();
-            setData(val);
-        })
-    }
-    let extreme_temp = 0;
-    let start_time;
-    let end_time;
-    if(data !== undefined && data !== 0){
-        extreme_temp = data['extreme_temp'];
-        start_time = data['working_from'];
-        end_time = data['working_to'];
-    }
     
-    const [editTime, setEditTime] = useState(false);
-    const [editTemp, setEditTemp] = useState(false);
-    const [temp, setTemp] = useState({extreme_temp});
-    const [stTime, setStTime] = useState({start_time});
-    const [endTime, setEndTime] = useState({end_time});
-
+    const body = (
+        <Frame21/>
+    )
     return(
         <div class = "page">
             <div class = "settings">
@@ -105,7 +86,7 @@ const ManagerWorker = (props) => {
                 </div>
             </div>
             <div class = "calendar">
-                <Calendar year={year} month={(month)} id={idWorker}/>
+                <Calendar year={year} month={(month)} id={idWorker} redDayPopup={body}/>
             </div>
         </div>
     )

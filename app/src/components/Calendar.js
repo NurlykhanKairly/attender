@@ -2,11 +2,16 @@ import React, {useEffect, useState} from "react";
 import '../css/Calendar.css';
 import Day from './Calendar_day';
 import { getDatabase, ref, onValue, } from "firebase/database";
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const Calendar = (props) => {
 
     //get first monday
+    const rolePopup = props.rolePopup;
     const first = `${props.year}-${props.month}-1`;
     let first_day = new Date(first);
     let w = first_day.getDay();
@@ -87,17 +92,62 @@ const Calendar = (props) => {
     }
     let weeks = []
     //divide 35 days into 5 weeks
+    const [redOpen, setRedOpen] = useState(false);
+    const [greenOpen, setGreenOpen] = useState(false);
+    const [whiteOpen, setWhiteOpen] = useState(false);
+
+    const handleRedOpen = () => {
+        setRedOpen(true);
+    }
+    const handleRedClose = () => {
+        setRedOpen(false);
+    }
+    const handleGreenOpen = () => {
+        setGreenOpen(true);
+    }    
+    const handleGreenClose = () => {
+        setGreenOpen(false);
+    }
+    const handleWhiteOpen = () => {
+        setWhiteOpen(true);
+    }    
+    const handleWhiteClose = () => {
+        setWhiteOpen(false);
+    }
     for(let i = 0; i < 5; i++){
         let week = days.slice(i*7, i*7+7).map((today) => 
-        <th className='cell'>
+        <th className='cell' onClick={(today.status==='absent') ? handleRedOpen :
+         ((today.status === 'onTime' || today.status==='late') ? handleGreenOpen : handleWhiteOpen)}>
             <Day day={today.date} time={today.time} status={today.status} reason={today.reason}/>
-            </th>
+        </th>
         );
         weeks.push(week);
     }
 
+    /////
     return(
         <div className = "calendar">
+            <Dialog
+            open={redOpen}
+            onClose={handleRedClose}>
+                <DialogContent>
+                    {props.redDayPopup}
+                </DialogContent>
+            </Dialog>
+            <Dialog
+            open={greenOpen}
+            onClose={handleGreenClose}>
+                <DialogContent>
+                    {props.greenDayPopup}
+                </DialogContent>
+            </Dialog>
+            <Dialog
+            open={whiteOpen}
+            onClose={handleWhiteClose}>
+                <DialogContent>
+                    {props.whiteDayPopup}
+                </DialogContent>
+            </Dialog>
             <table>
                 <thead>
                     <tr>
