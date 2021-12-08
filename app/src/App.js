@@ -2,6 +2,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Email from "./components/Email";
+import Worker from "./components/Worker";
+import ManagerWorker from "./components/Manager_worker";
+import WorkerSignup from "./components/Worker_signup";
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Frame19 from "./components/Frame19";
@@ -21,6 +24,9 @@ function App() {
             <Route path="/home" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/email" element={<Email />} />
+            <Route path="/worker" element={<Worker/>}/>
+            <Route path="/manager-worker" element={<ManagerWorker/>}/>
+            <Route path="/signup" element={<WorkerSignup/>}/>
             <Route path="/frame19" element={<Frame19 />} />
             <Route path="/frame20" element={<Frame20 />} />
             <Route path="/frame21" element={<Frame21 />} />
