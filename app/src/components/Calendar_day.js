@@ -23,7 +23,7 @@ const Day = (props) => {
             )
         case "absent":
             return(
-                <div className='red_day'>
+                <div className={props.reasonResponse ? 'green_day' : 'red_day'}>
                     <div>{day}</div>
                     <div>Reason</div>
                     <div style={{fontSize: '24px', textAlign: 'center'}}>{props.reason}</div>
