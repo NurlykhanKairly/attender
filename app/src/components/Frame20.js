@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { styled } from '@mui/material/styles';
-
+import { db } from '../firebase';
+import { ref, set } from 'firebase/database';
 import '../css/Email.css';
 
 
@@ -9,14 +10,21 @@ const Input = styled('input')({
     display: 'none',
 });
 
-const Frame20 = () => {
+const Frame20 = (props) => {
+    const [text, setText] = useState('');
+    const reasonRef = ref(db, `workers/${props.id}/attendance/${props.current_day}/reason`);
+    const uploadReason = () => {
+        console.log(text);
+        set(reasonRef, text);
+        props.close();
+    }
     return (
         <>
             <div>
-                <form className="email-form" style={{marginTop: '200px'}}>
+                <form className="email-form">
                     <p>
                     <div style={{textAlign: 'center'}}>
-                        <h4>November 16</h4>
+                        <h4>{props.month} {props.day}</h4>
                     </div>
                     </p>
 
@@ -24,7 +32,7 @@ const Frame20 = () => {
                     <div>Enter a reason:</div>
                             
                     <div>
-                        <input type="text" style={{width: '250px'}}/>
+                        <input type="text" style={{width: '250px'}} onChange={(event) => {setText(event.target.value)}}/>
                     </div>
 
                     </p>
@@ -37,11 +45,11 @@ const Frame20 = () => {
                             <Input accept="image/*" id="contained-button-file" multiple type="file" />
                             <Button component="span" variant="outlined">
                                 Upload
-                             </Button>
+                            </Button>
                         </label>
                      </div>
                     </p>
-                    <Button variant="contained" style={{marginRight: 'auto', marginLeft: 'auto', display: 'block'}}>Submit</Button>
+                    <Button variant="contained" style={{marginRight: 'auto', marginLeft: 'auto', display: 'block'}} onClick={uploadReason}>Submit</Button>
                 </form>
             </div>
         </>

@@ -7,6 +7,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, } from "firebase/database";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
+import Frame20 from "./Frame20";
+import Frame19 from "./Frame19";
 
 const Worker = () => {
     let today = new Date();
@@ -51,7 +53,15 @@ const Worker = () => {
         start_time = data['working_from'];
         end_time = data['working_to'];
     }
-        
+
+    const redDayPopup = (dayData, close) => (
+        <Frame20 day={dayData.day} month={month_names[(month-1)%12]} id={dayData.id} current_day={dayData.current_day} close={close}/>
+    )
+    const greenDayPopup = (dayData, close) => 
+        (dayData !== undefined) ?  
+        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood}/>)
+        :
+        (<Frame19 day="error" month={month_names[(month-1)%12]} time="error"/>)
     return(
         <div className = "page">
                 <div className="month">
@@ -83,7 +93,11 @@ const Worker = () => {
                     </div>
                 </div>
             <div className = "calendar">
-                <Calendar year={year} month={(month)} id={id}/>
+                <Calendar 
+                year={year} 
+                month={(month)} id={id} 
+                redDayPopup={redDayPopup} 
+                greenDayPopup={greenDayPopup} />
             </div>
         </div>
     )
