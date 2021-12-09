@@ -9,7 +9,7 @@ import { getDatabase, ref, onValue, set} from "firebase/database";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
 import Frame21 from "./Frame21";
-
+import Frame19 from "./Frame19";
 const ManagerWorker = (props) => {
     
     const db = getDatabase();
@@ -53,6 +53,9 @@ const ManagerWorker = (props) => {
     const body = (
         <Frame21/>
     )
+    const greenDayPopup = (day, time) => {
+        <Frame19 day={day} time={time}/>
+    }
     return(
         <div class = "page">
             <div class = "settings">
@@ -86,7 +89,7 @@ const ManagerWorker = (props) => {
                 </div>
             </div>
             <div class = "calendar">
-                <Calendar year={year} month={(month)} id={idWorker} redDayPopup={body}/>
+                <Calendar year={year} month={(month)} id={idWorker} redDayPopup={body} greenDayPopup={greenDayPopup}/>
             </div>
         </div>
     )

@@ -54,9 +54,14 @@ const Worker = () => {
         end_time = data['working_to'];
     }
 
-    const body = (
-        <Frame20/>
+    const redDayPopup = (dayData, close) => (
+        <Frame20 day={dayData.day} month={month_names[(month-1)%12]} id={dayData.id} current_day={dayData.current_day} close={close}/>
     )
+    const greenDayPopup = (dayData, close) => 
+        (dayData !== undefined) ?  
+        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood}/>)
+        :
+        (<Frame19 day="error" month={month_names[(month-1)%12]} time="error"/>)
     return(
         <div className = "page">
                 <div className="month">
@@ -88,7 +93,11 @@ const Worker = () => {
                     </div>
                 </div>
             <div className = "calendar">
-                <Calendar year={year} month={(month)} id={id} redDayPopup={(<Frame20/>)} greenDayPopup={(<Frame19/>)} />
+                <Calendar 
+                year={year} 
+                month={(month)} id={id} 
+                redDayPopup={redDayPopup} 
+                greenDayPopup={greenDayPopup} />
             </div>
         </div>
     )

@@ -4,6 +4,9 @@
     width:159px;
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .green_day{
     background-color: #E7EDBC;
@@ -34,6 +37,7 @@
 .head{
     font-size: 12px;
     font-family: 'Roboto', sans-serif;
+    text-align: center;
 }
 .settings{
     display: flex;

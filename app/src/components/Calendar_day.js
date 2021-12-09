@@ -1,3 +1,4 @@
+import { textAlign } from "@mui/system";
 import React from "react";
 import '../css/Calendar.css';
 
@@ -25,7 +26,7 @@ const Day = (props) => {
                 <div className='red_day'>
                     <div>{day}</div>
                     <div>Reason</div>
-                    <div style={{fontSize: '24px'}}>{props.reason}</div>
+                    <div style={{fontSize: '24px', textAlign: 'center'}}>{props.reason}</div>
                 </div>
             )
         case "dayOff":
@@ -33,7 +34,7 @@ const Day = (props) => {
                 <div className='grey_day'>
                     <div>{day}</div>
                     <div></div>
-                    <div style={{fontSize: '24px'}}>{props.reason}</div>
+                    <div style={{fontSize: '24px', textAlign: "center"}}>{props.reason}</div>
                 </div>
             )
         default:

@@ -48,7 +48,6 @@ const Calendar = (props) => {
         })
     }
 
-    console.log(data);
 
     //fill days array with 35 days to display on the screen
     let days = [];   
@@ -63,14 +62,14 @@ const Calendar = (props) => {
         }
         if(data !== undefined && data !== null && data[current_day_str] !== undefined && data[current_day_str] !== null && i % 7 < 5){
             //day found at attendance
-            if(data[current_day_str].time !== "" && data[current_day_str].time <= starting_time){
-                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "onTime"});
+            if(data[current_day_str].time !== "" && data[current_day_str].time !== undefined && data[current_day_str].time <= starting_time){
+                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "onTime", mood: data[current_day_str].mood});
             }
-            else if(data[current_day_str].time !== ""){
-                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "late"});
+            else if(data[current_day_str].time !== "" && data[current_day_str].time !== undefined){
+                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "late", mood: data[current_day_str].mood});
             }
             else{
-                days.push({date: current_day.getDate(), time: "", status: "absent", reason: data[current_day_str].Reason});
+                days.push({date: current_day.getDate(), time: "", status: "absent", reason: data[current_day_str].reason, current_day: current_day_str});
             }
         }
         else{
@@ -83,7 +82,7 @@ const Calendar = (props) => {
                 days.push({date: current_day.getDate(), time: "", status: "dayOff"});
             }
             else if(current_day <= today) {
-                days.push({date: current_day.getDate(), time: "", status: "absent", reason: ((data && data[current_day_str]) ? data[current_day_str].reason : '')});
+                days.push({date: current_day.getDate(), time: "", status: "absent", reason: ((data && data[current_day_str]) ? data[current_day_str].reason : ''), current_day: current_day_str});
             } else {
                 days.push({date: current_day.getDate(), time: "", status: ""});
             }
@@ -92,6 +91,7 @@ const Calendar = (props) => {
     }
     let weeks = []
     //divide 35 days into 5 weeks
+    const [dayData, setDayData] = useState({day: '', time: '', mood: ''});
     const [redOpen, setRedOpen] = useState(false);
     const [greenOpen, setGreenOpen] = useState(false);
     const [whiteOpen, setWhiteOpen] = useState(false);
@@ -116,31 +116,37 @@ const Calendar = (props) => {
     }
     for(let i = 0; i < 5; i++){
         let week = days.slice(i*7, i*7+7).map((today) => 
-        <th className='cell' onClick={(today.status==='absent') ? handleRedOpen :
-         ((today.status === 'onTime' || today.status==='late') ? handleGreenOpen : handleWhiteOpen)}>
+        <th className='cell' onClick={() => {
+            setDayData({day: today.date, time: today.time, mood: today.mood, id: id, current_day: today.current_day});
+            (today.status==='absent') ? handleRedOpen() :
+            ((today.status === 'onTime' || today.status==='late') ? handleGreenOpen() : handleWhiteOpen())}}>
             <Day day={today.date} time={today.time} status={today.status} reason={today.reason}/>
         </th>
         );
         weeks.push(week);
     }
-
     /////
     return(
         <div className = "calendar">
+            <div style={{display: 'flex', alignContent: ''}}>
+                <Dialog
+                open={greenOpen}
+                onClose={handleGreenClose}>
+                    <DialogTitle>
+                    </DialogTitle>
+                    <DialogContent>
+                        {props.greenDayPopup(dayData, handleGreenClose)}
+                    </DialogContent>
+                </Dialog>
+            </div>
             <Dialog
             open={redOpen}
             onClose={handleRedClose}>
                 <DialogContent>
-                    {props.redDayPopup}
+                    {props.redDayPopup(dayData, handleRedClose)}
                 </DialogContent>
             </Dialog>
-            <Dialog
-            open={greenOpen}
-            onClose={handleGreenClose}>
-                <DialogContent>
-                    {props.greenDayPopup}
-                </DialogContent>
-            </Dialog>
+            
             <Dialog
             open={whiteOpen}
             onClose={handleWhiteClose}>
