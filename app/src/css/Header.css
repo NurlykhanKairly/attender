@@ -1,0 +1,36 @@
+.link {
+    color: #505F98;
+    margin-right: 2vw;
+}
+
+.header-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 15px 5vw 15px 5vw;
+    background-color: #F3F5FF;
+    align-items: center;
+}
+
+.links-container {
+}
+
+.logo-container {
+    justify-self: center;
+    color: #37447E;
+}
+
+.profile-container {
+    justify-self: end;   
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.profile-container:hover {
+    cursor: pointer;
+}
+
+.profile-container p {
+    margin: 0 0 0 10px;
+    color: #37447E;
+}

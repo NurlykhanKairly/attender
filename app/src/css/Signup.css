@@ -1,0 +1,27 @@
+.radio-group {
+    display: flex;
+    flex-direction: row !important;
+}
+
+.signup-container {
+    display: flex;
+    justify-content: center;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-right {
+    align-self: flex-end;
+}
+
+.group-code-label {
+    display: flex;
+    align-items: baseline;
+}
+
+.link-text {
+    font-size: 13px;
+}

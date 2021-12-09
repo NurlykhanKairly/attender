@@ -27,15 +27,18 @@ export default function AttendanceGraph({workers, dayoffs, additionalInfo}) {
 
         let misses = 0, totalWorkers = 0;
         for(let workerKey in workers) {
+            if(workers[workerKey].role === "manager")
+                continue;
             console.log(workers[workerKey]);
             if(workers[workerKey].attendance && (!workers[workerKey].attendance[key])) {
                 misses ++;
             }
-            if(workers[workerKey].role !== "manager") {
-                totalWorkers ++;
-            }
+            totalWorkers ++;
         }
 
+
+        console.log('total workers: ', totalWorkers);
+        console.log('misses: ', misses);
         console.log(key, misses);
 
         data.push({
@@ -52,6 +55,7 @@ export default function AttendanceGraph({workers, dayoffs, additionalInfo}) {
     }
     console.log(data);
     console.log(ticks);
+    
     return (
             <div className="attendance-graph-responsive-container">
                 <p className="graph-title"> Attendance Rate </p>
