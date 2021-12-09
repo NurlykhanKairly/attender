@@ -50,12 +50,14 @@ const ManagerWorker = (props) => {
     const month_names = ["January", "February", "March", "April", "May", "June", 
         "July", "August", "September", "October", "November", "December"]
     
-    const body = (
-        <Frame21/>
+    const redDayPopup = (dayData, close) => (
+        <Frame21 day={dayData.day} month={month_names[(month-1)%12]} close={close} current_day={dayData.current_day} id={dayData.id}/>
     )
-    const greenDayPopup = (day, time) => {
-        <Frame19 day={day} time={time}/>
-    }
+    const greenDayPopup = (dayData, close) => 
+        (dayData !== undefined) ?  
+        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood} close={close}/>)
+        :
+        (<Frame19 day="error" month={month_names[(month-1)%12]} time="error" close={close}/>)
     return(
         <div class = "page">
             <div class = "settings">
@@ -89,7 +91,7 @@ const ManagerWorker = (props) => {
                 </div>
             </div>
             <div class = "calendar">
-                <Calendar year={year} month={(month)} id={idWorker} redDayPopup={body} greenDayPopup={greenDayPopup}/>
+                <Calendar year={year} month={(month)} id={idWorker} redDayPopup={redDayPopup} greenDayPopup={greenDayPopup}/>
             </div>
         </div>
     )
