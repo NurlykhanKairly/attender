@@ -18,7 +18,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ManagerSettings from "./components/ManagerSettings";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <>
