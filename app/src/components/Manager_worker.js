@@ -96,7 +96,7 @@ const ManagerWorker = (props) => {
                 </div>
             </div>
             <div class = "calendar">
-                <Calendar year={year} month={(month)} id={idWorker} redDayPopup={redDayPopup} greenDayPopup={greenDayPopup}/>
+                <Calendar year={year} month={(month)} id={idWorker} redDayPopup={redDayPopup} greenDayPopup={greenDayPopup} whiteDayPopup={()=>{}}/>
             </div>
         </div>
     )

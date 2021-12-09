@@ -56,7 +56,16 @@ const Calendar = (props) => {
     for(let i = 0; i < 35; i++){
         current_day_str = `${current_day.getFullYear()}-${('0' + (current_day.getMonth()+1)).slice(-2)}-${('0' + current_day.getDate()).slice(-2)}`;
         if(id === ''){
-            days.push({date: current_day.getDate(), time: "", status: ""});
+            if(dayoffs !== undefined && dayoffs[current_day_str] !== undefined){
+                days.push({date: current_day.getDate(), time: "", status: "dayOff", reason: dayoffs[current_day_str], current_day: current_day_str});
+            }
+            else if(i%7 == 5 || i%7 == 6){
+                //saturday and sunday
+                days.push({date: current_day.getDate(), time: "", status: "dayOff", current_day: current_day_str});
+            }
+            else {
+                days.push({date: current_day.getDate(), time: "", status: "", current_day: current_day_str});
+            }
             current_day.setDate(current_day.getDate() + 1);
             continue;
         }
@@ -84,7 +93,7 @@ const Calendar = (props) => {
             else if(current_day <= today) {
                 days.push({date: current_day.getDate(), time: "", status: "absent", reason: ((data && data[current_day_str]) ? data[current_day_str].reason : ''), current_day: current_day_str});
             } else {
-                days.push({date: current_day.getDate(), time: "", status: ""});
+                days.push({date: current_day.getDate(), time: "", status: "", current_day: current_day_str});
             }
         }
         current_day.setDate(current_day.getDate() + 1);
@@ -151,7 +160,7 @@ const Calendar = (props) => {
             open={whiteOpen}
             onClose={handleWhiteClose}>
                 <DialogContent>
-                    {props.whiteDayPopup}
+                    {props.whiteDayPopup(dayData, handleWhiteClose)}
                 </DialogContent>
             </Dialog>
             <table>
