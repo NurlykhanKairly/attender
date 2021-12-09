@@ -27,6 +27,9 @@ const Day = (props) => {
                     <div>{day}</div>
                     <div>Reason</div>
                     <div style={{fontSize: '24px', textAlign: 'center'}}>{props.reason}</div>
+                    {(props.reasonResponse === undefined) ? 
+                    <></> 
+                    : <div style={{display:"flex"}}>Reason {props.reasonResponse ? ('approved') : 'rejected'}</div>}
                 </div>
             )
         case "dayOff":

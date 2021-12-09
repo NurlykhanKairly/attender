@@ -69,7 +69,7 @@ const Calendar = (props) => {
                 days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "late", mood: data[current_day_str].mood});
             }
             else{
-                days.push({date: current_day.getDate(), time: "", status: "absent", reason: data[current_day_str].reason, current_day: current_day_str});
+                days.push({date: current_day.getDate(), time: "", status: "absent", reason: data[current_day_str].reason, current_day: current_day_str, reasonResponse: data[current_day_str].reason_response});
             }
         }
         else{
@@ -120,7 +120,7 @@ const Calendar = (props) => {
             setDayData({day: today.date, time: today.time, mood: today.mood, id: id, current_day: today.current_day});
             (today.status==='absent') ? handleRedOpen() :
             ((today.status === 'onTime' || today.status==='late') ? handleGreenOpen() : handleWhiteOpen())}}>
-            <Day day={today.date} time={today.time} status={today.status} reason={today.reason}/>
+            <Day day={today.date} time={today.time} status={today.status} reason={today.reason} reasonResponse={today.reasonResponse}/>
         </th>
         );
         weeks.push(week);
