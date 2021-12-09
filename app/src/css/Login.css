@@ -1,0 +1,8 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-right {
+    align-self: flex-end;
+}

@@ -7,42 +7,48 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, set} from "firebase/database";
 import { auth } from '../firebase';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Frame21 from "./Frame21";
 import Frame19 from "./Frame19";
-const ManagerWorker = (props) => {
+import NoMatch from "./NoMatch";
+
+
+const ManagerWorker = ({workers, dayoffs, additionalInfo}) => {
     // TODO pass props.name and props.id for a worker
     const db = getDatabase();
-
+    const {uid} = useParams();
     // Authenticate user
-    const [id, setId] = useState('');
-    const [idWorker, setIdWorker] = useState(props.id);
-    const [isManager, setIsManager] = useState(false);
-    const navigate = useNavigate();
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            console.log('authenticated! ' + user.uid);
-        } 
-        else {
-            navigate('/login');
-        }
-      });
-    const user = auth.currentUser;
-    if(!isManager && user !== null && user !== undefined){
-        onValue(ref(db, `workers/${user.uid}/role`), (snap) => {
-            if(snap.val() === 'manager'){
-                setIsManager(true);
-            }
-            else{
-                navigate('/worker');
-            }
-        })
-    }
-    if(id === '' && user){
-        setId(user.uid);
-        console.log('updated ' + id);
-    }
-    console.log('updated ' + id);
+    // const [id, setId] = useState('');
+    // const [idWorker, setIdWorker] = useState(props.id);
+    const idWorker = uid;
+    let exists = uid in workers;
+    // const [isManager, setIsManager] = useState(false);
+    // const navigate = useNavigate();
+    
+    // auth.onAuthStateChanged((user) => {
+    //     if (user) {
+    //         console.log('authenticated! ' + user.uid);
+    //     } 
+    //     else {
+    //         navigate('/login');
+    //     }
+    //   });
+    // const user = auth.currentUser;
+    // if(!isManager && user !== null && user !== undefined){
+    //     onValue(ref(db, `workers/${user.uid}/role`), (snap) => {
+    //         if(snap.val() === 'manager'){
+    //             setIsManager(true);
+    //         }
+    //         else{
+    //             navigate('/worker');
+    //         }
+    //     })
+    // }
+    // if(id === '' && user){
+    //     setId(user.uid);
+    //     console.log('updated ' + id);
+    // }
+    // console.log('updated ' + id);
     
     let today = new Date();
     const [year, setYear] = useState(today.getFullYear());
@@ -58,11 +64,14 @@ const ManagerWorker = (props) => {
         (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood} close={close}/>)
         :
         (<Frame19 day="error" month={month_names[(month-1)%12]} time="error" close={close}/>)
+    
     return(
-        <div class = "page">
-            <div class = "settings">
-                <div class="setting" style={{fontSize: '26px'}}>
-                    {props.name}'s profile
+        exists 
+        ?
+        <div className = "page">
+            <div className = "settings">
+                <div className="setting" style={{fontSize: '26px'}}>
+                    {workers[idWorker].name}'s profile
                 </div>
                 <div className="month" style={{marginBottom: '10px'}}>
                     <div onClick={() => {
@@ -92,13 +101,25 @@ const ManagerWorker = (props) => {
                         <ArrowForwardIosIcon/>
                     </div>
                 </div>
-                <div class="setting">
+                <div className="setting">
                 </div>
             </div>
-            <div class = "calendar">
-                <Calendar year={year} month={(month)} id={idWorker} redDayPopup={redDayPopup} greenDayPopup={greenDayPopup} whiteDayPopup={()=>{}}/>
+            <div className = "calendar">
+                <Calendar 
+                    year={year} 
+                    month={(month)} 
+                    id={idWorker} 
+                    redDayPopup={redDayPopup} 
+                    greenDayPopup={greenDayPopup} 
+                    whiteDayPopup={()=>{}}
+                    workers={workers}
+                    dayoffs={dayoffs}
+                    additionalInfo={additionalInfo}
+                />
             </div>
         </div>
+        :
+        <NoMatch />
     )
 }
 

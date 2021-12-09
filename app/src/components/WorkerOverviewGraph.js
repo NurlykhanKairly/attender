@@ -5,6 +5,8 @@ import { getYMD } from '../helpers';
 import { styled } from '@mui/material/styles';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { Link } from "react-router-dom";
+
 
 
 const HtmlTooltip = styled(({ className, ...props }) => (
@@ -16,7 +18,7 @@ const HtmlTooltip = styled(({ className, ...props }) => (
     },
 }));
 
-export default function WorkerOverviewGraph({workerData, dayoffs, additionalInfo}) {
+export default function WorkerOverviewGraph({workerId, workerData, dayoffs, additionalInfo}) {
     
     let finishDate = new Date();
     finishDate.setMonth(finishDate.getMonth() + 1);
@@ -129,6 +131,10 @@ export default function WorkerOverviewGraph({workerData, dayoffs, additionalInfo
                         <p className="miss-text"> {misses} missed </p>
                     </div>
                 </div>
+
+                <Link to={`/manager-worker/${workerId}`} style={{marginLeft: 'auto'}} >
+                    see more
+                </Link>
             </div>
             <div className="name-of-container">
                 <div style={{width:50}} /> 

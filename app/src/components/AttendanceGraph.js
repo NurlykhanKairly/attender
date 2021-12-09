@@ -27,31 +27,35 @@ export default function AttendanceGraph({workers, dayoffs, additionalInfo}) {
 
         let misses = 0, totalWorkers = 0;
         for(let workerKey in workers) {
-            console.log(workers[workerKey]);
+            if(workers[workerKey].role === "manager")
+                continue;
+            // console.log(workers[workerKey]);
             if(workers[workerKey].attendance && (!workers[workerKey].attendance[key])) {
                 misses ++;
             }
-            if(workers[workerKey].role !== "manager") {
-                totalWorkers ++;
-            }
+            totalWorkers ++;
         }
 
-        console.log(key, misses);
+
+        // console.log('total workers: ', totalWorkers);
+        // console.log('misses: ', misses);
+        // console.log(key, misses);
 
         data.push({
             name: `${d.toLocaleString('default', {month: 'long'})} ${d.getDate()}`,
             rate: (((totalWorkers - misses) / Math.max(1, totalWorkers)) * 100)
         });
 
-        if(d.getDate() == 1)
+        if(d.getDate() === 1)
             ticks.push(i);
         i += 1;
     }
-    if(data.length === 0) {
-        console.log('EMPTY!!');
-    }
-    console.log(data);
-    console.log(ticks);
+    
+    // console.log(data);
+    // console.log(ticks);
+    
+    console.log('AttendanceGraph rendered');
+
     return (
             <div className="attendance-graph-responsive-container">
                 <p className="graph-title"> Attendance Rate </p>
