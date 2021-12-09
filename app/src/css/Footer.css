@@ -1,0 +1,34 @@
+.footer {
+    background-color: #E7ECFF;
+    padding: 60px 5vw 15px 5vw;
+    color: #939EA4;
+    display: flex;
+    flex-direction: column;
+}
+
+.copyright {
+    margin-bottom: 60px;
+}
+
+.footer-bottom {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.footer-links {
+}
+
+.footer-icon {
+    margin-right: 1.5vw;
+}
+
+.social-media {
+    margin-left: auto;
+}
+
+.footer-link {
+    color: #939EA4;
+    margin-right: 2vw;
+}

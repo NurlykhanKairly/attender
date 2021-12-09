@@ -8,38 +8,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, set} from "firebase/database";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
+import Frame27 from "./Frame27";
 
-const ManagerSettings = (props) => {
+const ManagerSettings = ({dayoffs, additionalInfo}) => {
     const db = getDatabase();
 
     // Authenticate user
-    const [id, setId] = useState('');
-    const [isManager, setIsManager] = useState(false);
-    const navigate = useNavigate();
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            console.log('authenticated! ' + user.uid);
-        } 
-        else {
-            navigate('/login');
-        }
-      });
-    const user = auth.currentUser;
-    if(!isManager && user !== null && user !== undefined){
-        onValue(ref(db, `workers/${user.uid}/role`), (snap) => {
-            if(snap.val() === 'manager'){
-                setIsManager(true);
-            }
-            else{
-                navigate('/worker');
-            }
-        })
-    }
-    if(id === '' && user){
-        setId(user.uid);
-        console.log('updated ' + id);
-    }
-    console.log('updated ' + id);
+    // const [id, setId] = useState('');
     
     let today = new Date();
     const [year, setYear] = useState(today.getFullYear());
@@ -47,19 +22,12 @@ const ManagerSettings = (props) => {
     const month_names = ["January", "February", "March", "April", "May", "June", 
         "July", "August", "September", "October", "November", "December"]
 
-    //loading firebase
-    const info_ref = ref(db, `additional_info`);
-    const [data, setData] = useState(0);
-    if(data === 0){
-        onValue(info_ref, (snap) =>{
-            const val = snap.val();
-            setData(val);
-        })
-    }
+    const data = additionalInfo;
+    
     let extreme_temp = 0;
     let start_time;
     let end_time;
-    if(data !== undefined && data !== 0){
+    if(data){
         extreme_temp = data['extreme_temp'];
         start_time = data['working_from'];
         end_time = data['working_to'];
@@ -71,10 +39,13 @@ const ManagerSettings = (props) => {
     const [stTime, setStTime] = useState({start_time});
     const [endTime, setEndTime] = useState({end_time});
 
+    const whiteDayPopup = (dayData, close) => (
+        <Frame27 close={close} day={dayData.day} month={month_names[(month-1)%12]} current_day={dayData.current_day}/>
+    )
     return(
-        <div class = "page">
-            <div class = "settings">
-                <div class="setting" >
+        <div className = "page">
+            <div className = "settings">
+                <div className="setting" >
                     Working time: 
                     {!editTime ? (
                     <div>
@@ -125,7 +96,7 @@ const ManagerSettings = (props) => {
                         <ArrowForwardIosIcon/>
                     </div>
                 </div>
-                <div class="setting" style={{justifyContent: 'end'}}>
+                <div className="setting" style={{justifyContent: 'end'}}>
                     <div>
                         Extreme Temperature:
                     </div>
@@ -150,8 +121,18 @@ const ManagerSettings = (props) => {
                     </div>
                 </div>
             </div>
-            <div class = "calendar">
-                <Calendar year={year} month={(month)} id={''}/>
+            <div className = "calendar">
+                <Calendar 
+                    year={year} 
+                    month={(month)} 
+                    id={''} 
+                    greenDayPopup={() => {}} 
+                    redDayPopup = {() => {}} 
+                    whiteDayPopup={whiteDayPopup}
+                    // workers={workers}
+                    dayoffs={dayoffs}
+                    additionalInfo={additionalInfo}
+                />
             </div>
         </div>
     )

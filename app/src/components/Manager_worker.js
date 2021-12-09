@@ -7,96 +7,71 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, set} from "firebase/database";
 import { auth } from '../firebase';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Frame21 from "./Frame21";
+import Frame19 from "./Frame19";
+import NoMatch from "./NoMatch";
 
-const ManagerWorker = (props) => {
+
+const ManagerWorker = ({workers, dayoffs, additionalInfo}) => {
+    // TODO pass props.name and props.id for a worker
     const db = getDatabase();
-
+    const {uid} = useParams();
     // Authenticate user
-    const [id, setId] = useState('');
-    const [idWorker, setIdWorker] = useState(props.id);
-    const [isManager, setIsManager] = useState(false);
-    const navigate = useNavigate();
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            console.log('authenticated! ' + user.uid);
-        } 
-        else {
-            navigate('/login');
-        }
-      });
-    const user = auth.currentUser;
-    if(!isManager && user !== null && user !== undefined){
-        onValue(ref(db, `workers/${user.uid}/role`), (snap) => {
-            if(snap.val() === 'manager'){
-                setIsManager(true);
-            }
-            else{
-                navigate('/worker');
-            }
-        })
-    }
-    if(id === '' && user){
-        setId(user.uid);
-        console.log('updated ' + id);
-    }
-    console.log('updated ' + id);
+    // const [id, setId] = useState('');
+    // const [idWorker, setIdWorker] = useState(props.id);
+    const idWorker = uid;
+    let exists = uid in workers;
+    // const [isManager, setIsManager] = useState(false);
+    // const navigate = useNavigate();
+    
+    // auth.onAuthStateChanged((user) => {
+    //     if (user) {
+    //         console.log('authenticated! ' + user.uid);
+    //     } 
+    //     else {
+    //         navigate('/login');
+    //     }
+    //   });
+    // const user = auth.currentUser;
+    // if(!isManager && user !== null && user !== undefined){
+    //     onValue(ref(db, `workers/${user.uid}/role`), (snap) => {
+    //         if(snap.val() === 'manager'){
+    //             setIsManager(true);
+    //         }
+    //         else{
+    //             navigate('/worker');
+    //         }
+    //     })
+    // }
+    // if(id === '' && user){
+    //     setId(user.uid);
+    //     console.log('updated ' + id);
+    // }
+    // console.log('updated ' + id);
     
     let today = new Date();
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);
     const month_names = ["January", "February", "March", "April", "May", "June", 
         "July", "August", "September", "October", "November", "December"]
-
-    //loading firebase
-    const info_ref = ref(db, `additional_info`);
-    const [data, setData] = useState(0);
-    if(data === 0){
-        onValue(info_ref, (snap) =>{
-            const val = snap.val();
-            setData(val);
-        })
-    }
-    let extreme_temp = 0;
-    let start_time;
-    let end_time;
-    if(data !== undefined && data !== 0){
-        extreme_temp = data['extreme_temp'];
-        start_time = data['working_from'];
-        end_time = data['working_to'];
-    }
     
-    const [editTime, setEditTime] = useState(false);
-    const [editTemp, setEditTemp] = useState(false);
-    const [temp, setTemp] = useState({extreme_temp});
-    const [stTime, setStTime] = useState({start_time});
-    const [endTime, setEndTime] = useState({end_time});
-
+    const redDayPopup = (dayData, close) => (
+        <Frame21 day={dayData.day} month={month_names[(month-1)%12]} close={close} current_day={dayData.current_day} id={dayData.id}/>
+    )
+    const greenDayPopup = (dayData, close) => 
+        (dayData !== undefined) ?  
+        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood} close={close}/>)
+        :
+        (<Frame19 day="error" month={month_names[(month-1)%12]} time="error" close={close}/>)
+    
     return(
-        <div class = "page">
-            <div class = "settings">
-                <div class="setting" >
-                    Working time: 
-                    {!editTime ? (
-                    <div>
-                        {start_time}-{end_time}
-                    </div>) 
-                    : 
-                    <form style={{display: 'flex'}}>
-                        <input type='time' onChange={(event) => {setStTime(event.target.value)}}></input>
-                        -
-                        <input type='time' onChange={(event) => {setEndTime(event.target.value)}}></input>
-                    </form>}
-                    
-                    <div onClick = {() => {
-                        if(editTime){
-                            set(ref(db, 'additional_info/working_from'), stTime.toString());
-                            set(ref(db, 'additional_info/working_to'), endTime.toString());
-                        }
-                        setEditTime(!editTime);
-                    }}>
-                        <EditIcon/>
-                    </div>
+        exists 
+        ?
+        <div className = "page">
+            <div className = "settings">
+                <div className="setting" style={{fontSize: '26px'}}>
+                    {workers[idWorker].name}'s profile
                 </div>
                 <div className="month" style={{marginBottom: '10px'}}>
                     <div onClick={() => {
@@ -126,35 +101,25 @@ const ManagerWorker = (props) => {
                         <ArrowForwardIosIcon/>
                     </div>
                 </div>
-                <div class="setting" style={{justifyContent: 'end'}}>
-                    <div>
-                        Extreme Temperature:
-                    </div>
-                    {!editTemp ? (
-                        <div style={{}}>
-                            {extreme_temp}°C 
-                        </div>
-                    )
-                    :
-                    (
-                        <form>
-                            <input type='number' style={{width: '50px'}} onChange={(event) => {setTemp(event.target.value)} }></input>
-                        </form>
-                    )}
-                    <div onClick = {() => {
-                        if(editTemp){
-                            set(ref(db, 'additional_info/extreme_temp'), temp);
-                        }
-                        setEditTemp(!editTemp);
-                    }}>
-                        <EditIcon/>
-                    </div>
+                <div className="setting">
                 </div>
             </div>
-            <div class = "calendar">
-                <Calendar year={year} month={(month)} id={idWorker}/>
+            <div className = "calendar">
+                <Calendar 
+                    year={year} 
+                    month={(month)} 
+                    id={idWorker} 
+                    redDayPopup={redDayPopup} 
+                    greenDayPopup={greenDayPopup} 
+                    whiteDayPopup={()=>{}}
+                    workers={workers}
+                    dayoffs={dayoffs}
+                    additionalInfo={additionalInfo}
+                />
             </div>
         </div>
+        :
+        <NoMatch />
     )
 }
 

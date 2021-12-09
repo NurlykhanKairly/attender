@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import '../css/Calendar.css';
 import Calendar from './Calendar';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -7,53 +7,51 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, } from "firebase/database";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
+import Frame20 from "./Frame20";
+import Frame19 from "./Frame19";
+import CircularProgress from '@mui/material/CircularProgress';
 
-const Worker = () => {
+
+const Worker = ({uid, workers, dayoffs, additionalInfo}) => {
     let today = new Date();
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);
     const month_names = ["January", "February", "March", "April", "May", "June", 
         "July", "August", "September", "October", "November", "December"]
-    // Authenticate the user
+    
     const navigate = useNavigate();
-    const [id, setId] = useState('');
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            console.log('authenticated! ' + user.uid);
-            
-          // User logged in already or has just logged in.
-        } else {
+    
+    useEffect(() => {
+        if(!uid) {
             navigate('/login');
-          // User not logged in or has just logged out.
-        }
-      });
-    const user = auth.currentUser;
-    if(id === '' && user){
-        setId(user.uid);
-        console.log('updated');
-    }
+        }    
+    }, [uid]);
 
-    //loading firebase
-    const db = getDatabase();
-    const info_ref = ref(db, `additional_info`);
-    const [data, setData] = useState(0);
-    if(data === 0){
-        onValue(info_ref, (snap) =>{
-            const val = snap.val();
-            setData(val);
-        })
-    }
-    let extreme_temp = 0;
-    let start_time;
-    let end_time;
-    if(data !== undefined && data !== 0){
-        extreme_temp = data['extreme_temp'];
-        start_time = data['working_from'];
-        end_time = data['working_to'];
-    }
-        
+    // let extreme_temp = 0;
+    // let start_time;
+    // let end_time;
+    // if(additionalInfo){
+    //     extreme_temp = additionalInfo['extreme_temp'];
+    //     start_time = additionalInfo['working_from'];
+    //     end_time = additionalInfo['working_to'];
+    // }
+
+    const redDayPopup = (dayData, close) => (
+        <Frame20 day={dayData.day} month={month_names[(month-1)%12]} id={dayData.id} current_day={dayData.current_day} close={close}/>
+    )
+    const greenDayPopup = (dayData, close) => 
+        (dayData !== undefined) ?  
+        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood}/>)
+        :
+        (<Frame19 day="error" month={month_names[(month-1)%12]} time="error"/>)
+    
     return(
-        <div className = "page">
+        (!uid) ?
+            <div className="loading-container">
+                <CircularProgress />
+            </div>
+            :
+            <div className = "page">
                 <div className="month">
                     <div onClick={() => {
                         if(month - 1 < 1){
@@ -82,10 +80,19 @@ const Worker = () => {
                         <ArrowForwardIosIcon/>
                     </div>
                 </div>
-            <div className = "calendar">
-                <Calendar year={year} month={(month)} id={id}/>
+                <div className = "calendar">
+                    <Calendar
+                        year={year} 
+                        month={(month)} id={uid} 
+                        redDayPopup={redDayPopup} 
+                        greenDayPopup={greenDayPopup}
+                        whiteDayPopup={()=>{}}
+                        workers={workers}
+                        dayoffs={dayoffs}
+                        additionalInfo={additionalInfo}
+                        />
+                </div>
             </div>
-        </div>
     )
 }
 
