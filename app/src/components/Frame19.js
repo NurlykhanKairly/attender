@@ -10,14 +10,14 @@ const Frame19 = (props) => {
     return (
         // 
         <div >
-            <div class='row'>
+            <div className='row'>
                 {/* <div class='column' style={{marginTop: 'auto', marginBottom: 'auto'}}>
                     <Button>
                         <ArrowBackIosIcon/>
                     </Button>
                 </div> */}
 
-                <div class='column'>
+                <div className='column'>
                     <div style={{textAlign: 'center'}}>
                         {props.month}, {props.day}
 
@@ -34,7 +34,7 @@ const Frame19 = (props) => {
                     </div>
                 </div>
 
-                <div class='column'>
+                <div className='column'>
                     <img style={{width: '350px'}} src="https://static.remove.bg/remove-bg-web/126e8851f6e88bf644890fafdf1b0d82aff0629e/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg"></img>
                 </div>
                 
