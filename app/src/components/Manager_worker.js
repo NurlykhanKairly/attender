@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Frame21 from "./Frame21";
 import Frame19 from "./Frame19";
 const ManagerWorker = (props) => {
-    
+    // TODO pass props.name and props.id for a worker
     const db = getDatabase();
 
     // Authenticate user
@@ -61,6 +61,9 @@ const ManagerWorker = (props) => {
     return(
         <div class = "page">
             <div class = "settings">
+                <div class="setting" style={{fontSize: '26px'}}>
+                    {props.name}'s profile
+                </div>
                 <div className="month" style={{marginBottom: '10px'}}>
                     <div onClick={() => {
                         if(month - 1 < 1){
@@ -88,6 +91,8 @@ const ManagerWorker = (props) => {
                     } }>
                         <ArrowForwardIosIcon/>
                     </div>
+                </div>
+                <div class="setting">
                 </div>
             </div>
             <div class = "calendar">
