@@ -70,7 +70,7 @@ function App() {
   let manager = false;
   if(uid && workers && workers[uid].role === "manager")
     manager = true;
-  console.log(uid, workers, manager);
+  // console.log(uid, workers, manager);
 
   return (
     <>
@@ -93,18 +93,18 @@ function App() {
                     <>
                       <Route path="/" element={<Dashboard uid={uid} workers={workers} dayoffs={dayoffs} additionalInfo={additionalInfo}/>} />    
                       <Route path="/email" element={<Email />} />
-                      <Route path="/manager-settings" element={<ManagerSettings/>}/>
+                      <Route path="/manager-settings" element={<ManagerSettings dayoffs={dayoffs} additionalInfo={additionalInfo}/>}/>
+                      <Route path="/manager-worker/:uid" element={<ManagerWorker workers={workers} dayoffs={dayoffs} additionalInfo={additionalInfo}/>}/>
+                      <Route path="/generate-random-attendance" element={<GenerateRandomAttendanceData />} />
                     </>
                     :
-                      <Route path="/" element={<Worker/>}/>
+                      <Route path="/" element={<Worker uid={uid} workers={workers} dayoffs={dayoffs} additionalInfo={additionalInfo}/>}/>
                 }
-                <Route path="/manager-worker" element={<ManagerWorker/>}/>
-                <Route path="/frame19" element={<Frame19 />} />
+                {/* <Route path="/frame19" element={<Frame19 />} />
                 <Route path="/frame20" element={<Frame20 />} />
                 <Route path="/frame21" element={<Frame21 />} />
                 <Route path="/frame22" element={<Frame22 />} />
-                <Route path="/frame27" element={<Frame27 />} />
-                <Route path="/generate-random-attendance" element={<GenerateRandomAttendanceData />} />
+                <Route path="/frame27" element={<Frame27 />} /> */}
                 <Route path="*" element={<NoMatch />} />                  
               </Routes>
             </div>

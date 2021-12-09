@@ -12,7 +12,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 
 export default function Footer({uid, workers, dayoffs, additionalInfo}) {
     let location = useLocation();
-    if(location.pathname === '/login' || location.pathname == '/signup')
+    if(location.pathname === '/login' || location.pathname === '/signup')
         return null;
     if(!uid || !workers)
         return null;

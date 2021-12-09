@@ -20,29 +20,11 @@ export default function Header({uid, workers, dayoffs, additionalInfo}) {
     const handleClose = () => {
         setAnchorEl(null);
     };    
-    // useEffect(() => {
-    //     auth.onAuthStateChanged((user) => {
-    //         console.log('Auth ', user);
-    //         if (user) {
-    //             setUid(user.uid);
-    //         } else {
-    //             setUid(null);
-    //             navigate('/login');
-    //         }
-    //     });
-    //     get(child(ref(db), '/workers')).then((snapshot) => {
-    //         if(snapshot.exists()) {
-    //             setWorkers(snapshot.val());
-    //         } else {
-    //             console.log("No data available");
-    //         }
-    //     });
-    // }, []);
 
-    if(location.pathname === '/login' || location.pathname == '/signup')
+    if(location.pathname === '/login' || location.pathname === '/signup')
         return null;
 
-    console.log(uid, workers);
+    // console.log(uid, workers);
 
     if(!uid || !workers)
         return null;
