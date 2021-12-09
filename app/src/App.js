@@ -23,7 +23,6 @@ import ManagerSettings from "./components/ManagerSettings";
 import CircularProgress from '@mui/material/CircularProgress';
 import NoMatch from './components/NoMatch';
 
-
 function App() {
 
   const [workers, setWorkers] = useState(null);

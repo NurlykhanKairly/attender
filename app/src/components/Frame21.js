@@ -1,22 +1,35 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { styled } from '@mui/material/styles';
-
+import { db } from '../firebase';
 import '../css/Email.css';
 import Link from "@mui/material/Link";
+import { ref, onValue, set } from 'firebase/database';
 
-const Input = styled('input')({
-    display: 'none',
-});
-
-const Frame21 = () => {
+const Frame21 = (props) => {
+    const reasonRef = ref(db, `workers/${props.id}/attendance/${props.current_day}/reason`);
+    const reasonResponseRef = ref(db, `workers/${props.id}/attendance/${props.current_day}/reason_response`)
+    const [reason, setReason] = useState('');
+    onValue(reasonRef, (snap) => {
+        if(snap.exists() && reason === ''){
+            setReason(snap.val());
+        }
+    })
+    const approve = () => {
+        set(reasonResponseRef, true);
+        props.close();
+    }
+    const reject = () => {
+        set(reasonResponseRef, false);
+        props.close();
+    }
     return (
         <>
             <div>
                 <form className="email-form" style={{marginTop: '200px'}}>
                     <p>
                     <div style={{textAlign: 'center'}}>
-                        <h4>November 16</h4>
+                        <h4>{props.month} {props.day}</h4>
                     </div>
                     </p>
 
@@ -24,7 +37,7 @@ const Frame21 = () => {
                     <div>Reason:</div>
                             
                     <div>
-                        Visited a dentist.
+                        {reason}
                     </div>
 
                     </p>
@@ -40,11 +53,11 @@ const Frame21 = () => {
                     <p>
                         <div style={{display: 'flex', flexDirection: 'row'}}>
                             <div>
-                                <Button variant="outlined" style={{marginRight: 'auto', marginLeft: 'auto', display: 'block'}}>Reject</Button>
+                                <Button variant="outlined" style={{marginRight: 'auto', marginLeft: 'auto', display: 'block'}} onClick={reject}>Reject</Button>
                             </div>
 
                             <div>
-                                <Button variant="contained" style={{marginRight: 'auto', marginLeft: 'auto', display: 'block'}}>Approve</Button>
+                                <Button variant="contained" style={{marginRight: 'auto', marginLeft: 'auto', display: 'block'}} onClick={approve}>Approve</Button>
                             </div>
                         </div>
                     </p>

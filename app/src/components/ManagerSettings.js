@@ -8,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getDatabase, ref, onValue, set} from "firebase/database";
 import { auth } from '../firebase';
 import { useNavigate } from "react-router-dom";
+import Frame27 from "./Frame27";
 
 const ManagerSettings = (props) => {
     const db = getDatabase();
@@ -71,6 +72,9 @@ const ManagerSettings = (props) => {
     const [stTime, setStTime] = useState({start_time});
     const [endTime, setEndTime] = useState({end_time});
 
+    const whiteDayPopup = (dayData, close) => (
+        <Frame27 close={close} day={dayData.day} month={month_names[(month-1)%12]} current_day={dayData.current_day}/>
+    )
     return(
         <div class = "page">
             <div class = "settings">
@@ -151,7 +155,7 @@ const ManagerSettings = (props) => {
                 </div>
             </div>
             <div class = "calendar">
-                <Calendar year={year} month={(month)} id={''}/>
+                <Calendar year={year} month={(month)} id={''} greenDayPopup={() => {}} redDayPopup = {() => {}} whiteDayPopup={whiteDayPopup}/>
             </div>
         </div>
     )
