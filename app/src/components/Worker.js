@@ -97,7 +97,8 @@ const Worker = () => {
                 year={year} 
                 month={(month)} id={id} 
                 redDayPopup={redDayPopup} 
-                greenDayPopup={greenDayPopup} />
+                greenDayPopup={greenDayPopup}
+                whiteDayPopup={()=>{}} />
             </div>
         </div>
     )
