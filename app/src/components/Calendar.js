@@ -121,9 +121,7 @@ const Calendar = (props) => {
                 <Dialog
                 open={greenOpen}
                 onClose={handleGreenClose}>
-                    <DialogTitle>
-                    </DialogTitle>
-                    <DialogContent>
+                    <DialogContent style={{padding: 0}}>
                         {props.greenDayPopup(dayData, handleGreenClose)}
                     </DialogContent>
                 </Dialog>
@@ -131,7 +129,7 @@ const Calendar = (props) => {
             <Dialog
             open={redOpen}
             onClose={handleRedClose}>
-                <DialogContent>
+                <DialogContent style={{padding: 0}}>
                     {props.redDayPopup(dayData, handleRedClose)}
                 </DialogContent>
             </Dialog>

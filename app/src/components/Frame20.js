@@ -21,7 +21,7 @@ const Frame20 = (props) => {
     return (
         <>
             <div>
-                <form className="email-form">
+                <form className="email-form" style={{marginTop: 0}}>
                     <p>
                     <div style={{textAlign: 'center'}}>
                         <h4>{props.month} {props.day}</h4>
