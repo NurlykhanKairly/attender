@@ -124,7 +124,26 @@ function generateTemperature() {
     }
 }
 
-export default function GenerateRandomAttendanceData() {
+function generateRandomAttendance(startDate, finishDate) {
+    let attendance = {}
+    for(let d = new Date(startDate.getTime()); d <= finishDate; d.setDate(d.getDate() + 1)) {
+        let key = getYMD(d);
+        let miss = (Math.random() <= 0.03);
+        // console.log(key, miss);
+        
+        if(!miss) {
+            attendance[key] = {
+                time: generateTime(),
+                picture: null, // url to the bucket
+                mood: generateMood(),
+                temperature: generateTemperature(),    
+            }
+        }
+    }
+    return attendance
+}
+
+function GenerateRandomAttendanceData() {
     
     useEffect(() => {
         console.log('Starting!');
@@ -143,7 +162,7 @@ export default function GenerateRandomAttendanceData() {
                     let worker = workers[workerKey];
                     console.log(workerKey, worker);
                     
-                    let attendance = {}
+                    let attendance = generateRandomAttendance(startDate, finishDate);
                     /* 
                     {
                         "01-01-2022": {
@@ -159,22 +178,7 @@ export default function GenerateRandomAttendanceData() {
                     };
                     */ 
                     
-                    for(let d = new Date(startDate.getTime()); d <= finishDate; d.setDate(d.getDate() + 1)) {
-                        let key = getYMD(d);
-                        let miss = (Math.random() <= 0.03);
-                        // console.log(key, miss);
-                        
-                        if(!miss) {
-                            attendance[key] = {
-                                time: generateTime(),
-                                picture: null, // url to the bucket
-                                mood: generateMood(),
-                                temperature: generateTemperature(),    
-                            }
-                        }
-                    }
-
-                    console.log(attendance);
+                    // console.log(attendance);
 
                     let gender = Math.random() * 2;
                     if(gender <= 1) gender = "male";
@@ -203,4 +207,9 @@ export default function GenerateRandomAttendanceData() {
             Firebase updated!
         </div>
     )
+}
+
+export {
+    GenerateRandomAttendanceData,
+    generateRandomAttendance
 }

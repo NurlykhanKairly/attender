@@ -20,7 +20,7 @@ function makeid(length) {
     return result;
 }
 
-export default function ManagerSignnup() {
+export default function ManagerSignnup({setError}) {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -135,10 +135,15 @@ export default function ManagerSignnup() {
             <div  style={{alignItems: "center", textAlign:"center", marginTop: 10}}>
                 <button 
                     className="btn btn-primary btn-block"
-                    onClick={(e) => {
+                    onClick={async (e) => {
                         e.preventDefault();
-                        registerWithEmailAndPassword(fullName, position, email, password);
-                        navigate('/login');
+                        try {
+                            await registerWithEmailAndPassword('manager', fullName, null, email, password);
+                            navigate('/login');
+                        } catch (err) {
+                            console.log("ERROR caght", err.message);
+                            setError(err.message);
+                        }
                     }}
                 >
                     Sign up

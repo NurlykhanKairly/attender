@@ -51,6 +51,7 @@ const Login = ({uid}) => {
                         <div className="form-group">
                             <label>Email address</label>
                             <input 
+                                required
                                 type="email" 
                                 className="form-control"
                                 placeholder="Enter email" 
@@ -61,6 +62,7 @@ const Login = ({uid}) => {
                         <div className="form-group">
                             <label>Password</label>
                             <input 
+                                required
                                 type="password" 
                                 className="form-control" 
                                 placeholder="Enter password"
@@ -81,6 +83,8 @@ const Login = ({uid}) => {
                                 className="btn btn-primary btn-block"
                                 onClick={(e) => onLogin(e)}
                             >
+                            {/* <input type="submit" /> */}
+
                                 Sign in
                             </button>
                         </div>

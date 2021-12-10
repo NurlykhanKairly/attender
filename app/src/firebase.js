@@ -3,7 +3,7 @@ import { getDatabase, set, ref } from '@firebase/database';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-
+import { generateRandomAttendance } from './components/GenerateRandomAttendanceData';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -39,28 +39,30 @@ const signInWithEmailAndPassword = async (email, password) => {
     }
 };
 
-const registerWithEmailAndPassword = async (name, position, email, password) => {
-    try {
-        const res = await auth.createUserWithEmailAndPassword(email, password);
-        const user = res.user;
-        await db.collection("users").add({
-            uid: user.uid,
-            name,
-            authProvider: "local",
-            email
-        })
-        await set(ref(db, `workers/${user.uid}`), {
-            name,
-            email,
-            photo: "",
-            position,
-            role: 'worker',
-            attendance:{}
-        })
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
-    }
+const registerWithEmailAndPassword = async (role, name, position, email, password) => {
+    const res = await auth.createUserWithEmailAndPassword(email, password);
+    const user = res.user;
+    // await db.collection("users").add({
+    //     uid: user.uid,
+    //     name,
+    //     authProvider: "local",
+    //     email
+    // })
+    let finishDate = new Date();
+    let startDate = new Date();
+    startDate.setMonth(finishDate.getMonth() - 2);
+    startDate.setDate(1);
+
+    await set(ref(db, `workers/${user.uid}`), {
+        name,
+        email,
+        photo: "", // backend will upload photo to AWS and set the url in Firebase
+        position,
+        role,
+        attendance: generateRandomAttendance(startDate, finishDate) // generating random attendance for last 3 month for new worker
+    });
+
+    console.log('[inner] created!');
 };
 
 const logout = () => {

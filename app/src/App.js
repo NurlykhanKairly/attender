@@ -16,7 +16,7 @@ import Frame21 from "./components/Frame21";
 import Frame22 from "./components/Frame22";
 import Frame27 from "./components/Frame27";
 import Dashboard from "./components/Dashboard";
-import GenerateRandomAttendanceData from "./components/GenerateRandomAttendanceData";
+import { GenerateRandomAttendanceData } from "./components/GenerateRandomAttendanceData";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ManagerSettings from "./components/ManagerSettings";
@@ -68,7 +68,7 @@ function App() {
   if(uid !== null && workers !== null && dayoffs !== null && additionalInfo !== null)
     loading = false;
   let manager = false;
-  if(uid && workers && workers[uid].role === "manager")
+  if(uid && workers && workers[uid] && workers[uid].role === "manager")
     manager = true;
   // console.log(uid, workers, manager);
 

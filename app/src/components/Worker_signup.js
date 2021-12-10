@@ -7,7 +7,7 @@ import { create } from '@mui/material/styles/createTransitions';
 import axios from 'axios';
 
 
-export default function WorkerSignup() {
+export default function WorkerSignup({setError}) {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -16,29 +16,30 @@ export default function WorkerSignup() {
     const [position, setPosition] = useState("");
     const [file, setFile] = useState(null);
 
-    const handleFormSubmit = (event) => {
+
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
+        try {
+            await registerWithEmailAndPassword('worker', fullName, position, email, password);
+            // TODO: upload photo to backend
+            // let fileFormData = new FormData();
+            // fileFormData.append("student-id", studentId);
+            // fileFormData.append("class-id", classId);
+            // fileFormData.append("student-image", file, file.name);
 
-        console.log('Submitted!');
-
-        // e.preventDefault();
-        // registerWithEmailAndPassword(fullName, position, email, password);
-        // navigate('/login');
-
-        // let fileFormData = new FormData();
-        // fileFormData.append("student-id", studentId);
-        // fileFormData.append("class-id", classId);
-        // fileFormData.append("student-image", file, file.name);
-
-        // axios.post("http://127.0.0.1:5000/api/students/upload-image", fileFormData, {
-        //     headers: {
-        //         "Content-Type": "multipart/form-data"
-        //     }
-        // }).then((response) => {
-        //     console.log("The response is: ", response);
-        // }).catch((error) => {
-        //     console.error("The error is: ", error);
-        // });
+            // axios.post("http://127.0.0.1:5000/api/students/upload-image", fileFormData, {
+            //     headers: {
+            //         "Content-Type": "multipart/form-data"
+            //     }
+            // }).then((response) => {
+            //     console.log("The response is: ", response);
+            // }).catch((error) => {
+            //     console.error("The error is: ", error);
+            // });
+            navigate('/login');
+        } catch (err) {
+            setError(err.message);
+        }
     }
 
     return (
