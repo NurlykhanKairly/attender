@@ -31,10 +31,14 @@ export default function Header({uid, workers, dayoffs, additionalInfo}) {
         return null;
 
     let links = [];
+    let position = '';
     links.push(<Link to="/" className="link"> Home </Link>);        
     if(workers[uid].role === "manager") {
         links.push(<Link to="/email" className="link"> Notify </Link>);
         links.push(<Link to="/manager-settings" className="link"> Settings </Link>);
+        position = 'Manager';
+    } else {
+        position = workers[uid].position;
     }
     return (
         <div className="header-container"> 
@@ -53,7 +57,10 @@ export default function Header({uid, workers, dayoffs, additionalInfo}) {
                 aria-expanded={open ? 'true' : undefined}
             >
                 <Avatar alt={workers[uid].name} src={workers[uid].photo} sx={{width: 40, height: 40}}/>
-                <p> {workers[uid].name} </p>
+                <div className='profile-text'>
+                    <p> {workers[uid].name} </p>
+                    <p style={{fontSize: '0.9em'}}> {position} </p>
+                </div>
             </div>
     
             <Menu

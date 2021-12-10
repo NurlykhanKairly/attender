@@ -26,7 +26,7 @@ const Frame21 = (props) => {
     return (
         <>
             <div>
-                <form className="email-form" style={{marginTop: '200px'}}>
+                <form className="email-form" style={{marginTop: 0}}>
                     <p>
                     <div style={{textAlign: 'center'}}>
                         <h4>{props.month} {props.day}</h4>
@@ -46,7 +46,8 @@ const Frame21 = (props) => {
                         <div>Uploaded files:</div>
 
                         <div>
-                            <Link>dentist_certificate.png</Link>
+                            None
+                            {/* <Link>dentist_certificate.png</Link> */}
                         </div>
                     </p>
 
@@ -56,7 +57,7 @@ const Frame21 = (props) => {
                                 <Button variant="outlined" style={{marginRight: 'auto', marginLeft: 'auto', display: 'block'}} onClick={reject}>Reject</Button>
                             </div>
 
-                            <div>
+                            <div style={{marginLeft: '1vw'}}>
                                 <Button variant="contained" style={{marginRight: 'auto', marginLeft: 'auto', display: 'block'}} onClick={approve}>Approve</Button>
                             </div>
                         </div>
