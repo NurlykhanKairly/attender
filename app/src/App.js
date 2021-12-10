@@ -92,7 +92,7 @@ function App() {
                     ?
                     <>
                       <Route path="/" element={<Dashboard uid={uid} workers={workers} dayoffs={dayoffs} additionalInfo={additionalInfo}/>} />    
-                      <Route path="/email" element={<Email />} />
+                      <Route path="/email" element={<Email uid={uid} workers={workers} />} />
                       <Route path="/manager-settings" element={<ManagerSettings dayoffs={dayoffs} additionalInfo={additionalInfo}/>}/>
                       <Route path="/manager-worker/:uid" element={<ManagerWorker workers={workers} dayoffs={dayoffs} additionalInfo={additionalInfo}/>}/>
                       <Route path="/generate-random-attendance" element={<GenerateRandomAttendanceData />} />

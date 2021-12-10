@@ -37,7 +37,7 @@ export default function WorkerOverviewGraph({workerId, workerData, dayoffs, addi
     let misses = 0;
 
     // console.log(startDate.toLocaleDateString(), finishDate.toLocaleDateString());
-
+    
     for(let d = new Date(startDate.getTime()); d <= finishDate; d.setDate(d.getDate() + 1)) {
         if(prev !== null && prev.getMonth() != d.getMonth()) {
             monthBlocks.push(
@@ -51,6 +51,7 @@ export default function WorkerOverviewGraph({workerId, workerData, dayoffs, addi
             cur = [];
         } 
 
+        // console.log(workerData);
 
         let className = "mini-square";
         let key = getYMD(d);
@@ -58,7 +59,7 @@ export default function WorkerOverviewGraph({workerId, workerData, dayoffs, addi
         let today = new Date();
         let text = '';
         if(shift <= 5 && (!dayoffs[key]) && d <= today) {
-            if(workerData.attendance[key]) {
+            if(workerData.attendance && workerData.attendance[key]) {
                 if(workerData.attendance[key].time <= additionalInfo.working_from) {
                     className += ' mini-square-green';
                 } else {

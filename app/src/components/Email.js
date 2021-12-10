@@ -9,50 +9,37 @@ import '../css/Email.css';
 import emailjs from 'emailjs-com';
 
 import Button from "@mui/material/Button"
+import IconButton from '@mui/material/IconButton';
+import Snackbar from '@mui/material/Snackbar';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 import { init } from 'emailjs-com';
 init("user_ADA96Iq91Y5saGzluwfG5");
 
-const Email = () => {
+const Email = ({uid, workers}) => {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
-    const [workers, setWorkers] = useState({});
-    const dbRef = ref(db);
+    // const [workers, setWorkers] = useState({});
+    // const dbRef = ref(db);
     const navigate = useNavigate();
-    const [id, setId] = useState('');
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            console.log('authenticated! ' + user.uid);
-            
-          // User logged in already or has just logged in.
-        } else {
-            navigate('/login');
-          // User not logged in or has just logged out.
-        }
-      });
-    const user = auth.currentUser;
-    if(id === '' && user){
-        setId(user.uid);
-        console.log('updated');
-    }
-    console.log(workers);
+    const [open, setOpen] = React.useState(false);
+
+    // const [id, setId] = useState('');
+    const id = uid;
     useEffect(() => {
-        console.log('in use effect!');
-        console.log(workers);
-        console.log(user)
+        if(!uid) {
+            navigate('/login');
+        }    
+    }, [uid]);
 
-        get(child(dbRef, '/')).then((snapshot) => {
-            console.log('response');
-            if(snapshot.exists()) {
-                
-                console.log(snapshot.val());
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway')
+            return;
+        setOpen(false);
+    };
 
-                setWorkers(snapshot.val().workers);
-            } else {
-                console.log("No data available");
-            }
-        });
-    }, []);
+    console.log(workers);
 
     const onTitleChange = (event) => {
         setTitle(event.target.value);
@@ -64,9 +51,9 @@ const Email = () => {
 
     const sendEmail = () => {
         for(let workerKey in workers) {
-            if (workerKey == id) {
-                continue;
-            }
+            // if (workerKey == id) {
+            //     continue;
+            // }
 
             var data = {
                 to_email:workers[workerKey].email,
@@ -85,17 +72,30 @@ const Email = () => {
                 }
             );
         }
-        
-        navigate('/home');
-        alert('Emails successfully sent!');
+        setOpen(true);
+        setTitle('');
+        setContent('');
     }
+
+    const action = (
+        <React.Fragment>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+    );
 
     return (
         <>
             <div>
                 <form className="email-form">
                     <p>
-                        <label for="to" style={{width:'100px'}}>To: </label>
+                        <label htmlFor="to" style={{width:'100px'}}>To: </label>
 
                         <select id="to">
                             <option value="everyone">everyone</option>
@@ -103,13 +103,13 @@ const Email = () => {
                     </p>
 
                     <p>
-                        <label for="title" style={{width:'100px'}}>Title: </label>
-                        <input id="title" style={{width:'800px'}} type="text" onChange={onTitleChange} />
+                        <label htmlFor="title" style={{width:'100px'}}>Title: </label>
+                        <input id="title" style={{width:'800px'}} type="text" onChange={onTitleChange} value={title}/>
                     </p>
 
                     <p>
-                        <label for="content" style={{width:'100px', marginTop: '0'}}>Content: </label>
-                        <textarea id="content" style={{height:'300px', verticalAlign: 'top'}} name="content_text" rows="14" cols="106" onChange={onContentChange}/>
+                        <label htmlFor="content" style={{width:'100px', marginTop: '0'}}>Content: </label>
+                        <textarea id="content" style={{height:'300px', verticalAlign: 'top'}} name="content_text" rows="14" cols="106" onChange={onContentChange} value={content}/>
                     </p>
 
                     <Button 
@@ -118,6 +118,14 @@ const Email = () => {
                         onClick={() => sendEmail()}
                     >Send</Button>
                 </form>
+                <Snackbar
+                    anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+                    open={open}
+                    autoHideDuration={2000}
+                    onClose={handleClose}
+                    message="Emails were sent!"
+                    action={action}
+                />
             </div>
         </>
        

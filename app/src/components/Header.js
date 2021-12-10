@@ -14,6 +14,7 @@ export default function Header({uid, workers, dayoffs, additionalInfo}) {
     // const [workers, setWorkers] = useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const navigate = useNavigate();
     const handleOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -68,7 +69,11 @@ export default function Header({uid, workers, dayoffs, additionalInfo}) {
                 <MenuItem 
                     onClick={() => {
                         handleClose();
-                        logout();    
+                        auth.signOut().then(() => {
+                            navigate('/login');
+                        }).catch(error => {
+                            console.log(error);
+                        });
                     }}
                 >
                     Logout
