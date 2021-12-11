@@ -23,6 +23,12 @@ const Frame21 = (props) => {
         set(reasonResponseRef, false);
         props.close();
     }
+
+    let fileName = 'None';
+    if(reason && reason.length) {
+        fileName = <Link> {reason.split(' ')[0] + '.jpg'} </Link>
+    }
+
     return (
         <>
             <div>
@@ -46,8 +52,7 @@ const Frame21 = (props) => {
                         <div>Uploaded files:</div>
 
                         <div>
-                            None
-                            {/* <Link>dentist_certificate.png</Link> */}
+                            {fileName}
                         </div>
                     </p>
 
