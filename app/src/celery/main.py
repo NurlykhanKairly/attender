@@ -14,7 +14,13 @@ import logging
 from celery import Celery
 from celery.schedules import crontab, schedule
 
-app = Celery('main', broker="pyamqp://guest@localhost//")
+
+RABBITMQ_ADMIN_ID = 'attender'
+RABBITMQ_ADMIN_PW = 'attender'
+REDIS_RABBITMQ_IP = 'localhost'
+BROKER_URL='amqp://%s:%s@%s:5672/attender' % (RABBITMQ_ADMIN_ID, RABBITMQ_ADMIN_PW, REDIS_RABBITMQ_IP),    
+
+app = Celery('main', broker=BROKER_URL)
 
 
 cred = credentials.Certificate("C:/Users/nurly/attender/app/src/celery/attender-c6e24-firebase-adminsdk-dgcpr-67aded5525.json")
