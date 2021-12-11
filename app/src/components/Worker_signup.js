@@ -20,17 +20,20 @@ export default function WorkerSignup({setError}) {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
-            await registerWithEmailAndPassword('worker', fullName, position, email, password);
+            let uid = await registerWithEmailAndPassword('worker', fullName, position, email, password);
+            console.log('UID: ', uid);
             // TODO: upload photo to backend
-            // let fileFormData = new FormData();
-            // fileFormData.append("student-id", studentId);
+            let fileFormData = new FormData();
+            fileFormData.append("student-id", uid);
             // fileFormData.append("class-id", classId);
-            // fileFormData.append("student-image", file, file.name);
+            fileFormData.append("student-image", file, file.name);
 
-            // axios.post("http://127.0.0.1:5000/api/students/upload-image", fileFormData, {
-            //     headers: {
-            //         "Content-Type": "multipart/form-data"
-            //     }
+            let res = await axios.post("/api/students/upload-image", fileFormData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+            
             // }).then((response) => {
             //     console.log("The response is: ", response);
             // }).catch((error) => {

@@ -61,8 +61,9 @@ const registerWithEmailAndPassword = async (role, name, position, email, passwor
         role,
         attendance: generateRandomAttendance(startDate, finishDate) // generating random attendance for last 3 month for new worker
     });
+    // console.log('[inner] created!');
 
-    console.log('[inner] created!');
+    return user.uid;
 };
 
 const logout = () => {
