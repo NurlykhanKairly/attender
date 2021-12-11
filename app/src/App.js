@@ -16,7 +16,7 @@ import Frame21 from "./components/Frame21";
 import Frame22 from "./components/Frame22";
 import Frame27 from "./components/Frame27";
 import Dashboard from "./components/Dashboard";
-import GenerateRandomAttendanceData from "./components/GenerateRandomAttendanceData";
+import { GenerateRandomAttendanceData } from "./components/GenerateRandomAttendanceData";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ManagerSettings from "./components/ManagerSettings";
@@ -68,7 +68,7 @@ function App() {
   if(uid !== null && workers !== null && dayoffs !== null && additionalInfo !== null)
     loading = false;
   let manager = false;
-  if(uid && workers && workers[uid].role === "manager")
+  if(uid && workers && workers[uid] && workers[uid].role === "manager")
     manager = true;
   // console.log(uid, workers, manager);
 
@@ -92,7 +92,7 @@ function App() {
                     ?
                     <>
                       <Route path="/" element={<Dashboard uid={uid} workers={workers} dayoffs={dayoffs} additionalInfo={additionalInfo}/>} />    
-                      <Route path="/email" element={<Email />} />
+                      <Route path="/email" element={<Email uid={uid} workers={workers} />} />
                       <Route path="/manager-settings" element={<ManagerSettings dayoffs={dayoffs} additionalInfo={additionalInfo}/>}/>
                       <Route path="/manager-worker/:uid" element={<ManagerWorker workers={workers} dayoffs={dayoffs} additionalInfo={additionalInfo}/>}/>
                       <Route path="/generate-random-attendance" element={<GenerateRandomAttendanceData />} />

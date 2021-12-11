@@ -14,6 +14,10 @@
 .links-container {
 }
 
+.profile-text {
+    margin-left: 0.7vw;
+}
+
 .logo-container {
     justify-self: center;
     color: #37447E;

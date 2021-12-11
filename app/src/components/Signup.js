@@ -39,7 +39,7 @@ export default function Signup({uid}) {
             </div>
             :      
             <>
-            { error && <Alert severity="error">Unexpected error happened. Please try again </Alert> }      
+            { error && <Alert severity="error">Unexpected error happened. Error message: {error} </Alert> }      
             <div className="auth-wrapper">  
                 <div className="auth-inner">       
                     <h3>Sign up</h3> 
@@ -57,8 +57,8 @@ export default function Signup({uid}) {
                         </RadioGroup>
                     </FormControl>
                     {
-                        type === "worker" ? <WorkerSignup />
-                        : type === "manager" ? <ManagerSignnup />
+                        type === "worker" ? <WorkerSignup setError={setError}/>
+                        : type === "manager" ? <ManagerSignnup setError={setError}/>
                         : null
                     }
                     <p className="forgot-password text-right">

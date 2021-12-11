@@ -61,16 +61,16 @@ const ManagerWorker = ({workers, dayoffs, additionalInfo}) => {
     )
     const greenDayPopup = (dayData, close) => 
         (dayData !== undefined) ?  
-        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood} close={close}/>)
+        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood} close={close} workerName={workers[uid].name} workerPhoto={workers[uid].photo}/>)
         :
-        (<Frame19 day="error" month={month_names[(month-1)%12]} time="error" close={close}/>)
+        (<Frame19 day="error" month={month_names[(month-1)%12]} time="error" close={close} workerName={workers[uid].name} workerPhoto={workers[uid].photo}/>)
     
     return(
         exists 
         ?
         <div className = "page">
             <div className = "settings">
-                <div className="setting" style={{fontSize: '26px'}}>
+                <div className="setting" style={{fontSize: '26px', width: '400px'}}>
                     {workers[idWorker].name}'s profile
                 </div>
                 <div className="month" style={{marginBottom: '10px'}}>
@@ -101,7 +101,7 @@ const ManagerWorker = ({workers, dayoffs, additionalInfo}) => {
                         <ArrowForwardIosIcon/>
                     </div>
                 </div>
-                <div className="setting">
+                <div className="setting" style={{width: '400px'}}>
                 </div>
             </div>
             <div className = "calendar">

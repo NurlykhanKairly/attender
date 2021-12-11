@@ -49,7 +49,7 @@ const Calendar = (props) => {
             current_day.setDate(current_day.getDate() + 1);
             continue;
         }
-        if(data !== undefined && data !== null && data[current_day_str] !== undefined && data[current_day_str] !== null && i % 7 < 5){
+        if(data !== undefined && data !== null && data[current_day_str] !== undefined && data[current_day_str] !== null && i % 7 < 5 && (!dayoffs || (dayoffs && !dayoffs[current_day_str])) ){
             //day found at attendance
             if(data[current_day_str].time !== "" && data[current_day_str].time !== undefined && data[current_day_str].time <= starting_time){
                 days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "onTime", mood: data[current_day_str].mood});
@@ -121,9 +121,7 @@ const Calendar = (props) => {
                 <Dialog
                 open={greenOpen}
                 onClose={handleGreenClose}>
-                    <DialogTitle>
-                    </DialogTitle>
-                    <DialogContent>
+                    <DialogContent style={{padding: 0}}>
                         {props.greenDayPopup(dayData, handleGreenClose)}
                     </DialogContent>
                 </Dialog>
@@ -131,7 +129,7 @@ const Calendar = (props) => {
             <Dialog
             open={redOpen}
             onClose={handleRedClose}>
-                <DialogContent>
+                <DialogContent style={{padding: 0}}>
                     {props.redDayPopup(dayData, handleRedClose)}
                 </DialogContent>
             </Dialog>

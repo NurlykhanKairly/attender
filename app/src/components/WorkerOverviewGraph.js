@@ -37,7 +37,7 @@ export default function WorkerOverviewGraph({workerId, workerData, dayoffs, addi
     let misses = 0;
 
     // console.log(startDate.toLocaleDateString(), finishDate.toLocaleDateString());
-
+    
     for(let d = new Date(startDate.getTime()); d <= finishDate; d.setDate(d.getDate() + 1)) {
         if(prev !== null && prev.getMonth() != d.getMonth()) {
             monthBlocks.push(
@@ -51,6 +51,7 @@ export default function WorkerOverviewGraph({workerId, workerData, dayoffs, addi
             cur = [];
         } 
 
+        // console.log(workerData);
 
         let className = "mini-square";
         let key = getYMD(d);
@@ -58,14 +59,26 @@ export default function WorkerOverviewGraph({workerId, workerData, dayoffs, addi
         let today = new Date();
         let text = '';
         if(shift <= 5 && (!dayoffs[key]) && d <= today) {
-            if(workerData.attendance[key]) {
-                if(workerData.attendance[key].time <= additionalInfo.working_from) {
-                    className += ' mini-square-green';
+            if(workerData.attendance && workerData.attendance[key]) {
+                console.log(workerData.attendance[key].reason_response);
+                if(workerData.attendance[key].reason_response !== null && workerData.attendance[key].reason_response !== undefined) {
+                    if(workerData.attendance[key].reason_response) {
+                        className += ' mini-square-green';
+                        text = 'Reason was approved';
+                    } else {
+                        className += ' mini-square-red';
+                        text = 'Reason was rejected';
+                        misses ++;
+                    }
                 } else {
-                    className += ' mini-square-yellow';
-                    lates ++;
+                    if(workerData.attendance[key].time <= additionalInfo.working_from) {
+                        className += ' mini-square-green';
+                    } else {
+                        className += ' mini-square-yellow';
+                        lates ++;
+                    }
+                    text = `Check-in: ${workerData.attendance[key].time}`;    
                 }
-                text = `Check-in: ${workerData.attendance[key].time}`;
             } else {
                 className += ' mini-square-red';
                 misses ++;

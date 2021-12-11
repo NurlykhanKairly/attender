@@ -1,8 +1,18 @@
+.frame19-header {
+  display: flex;
+  padding: 1vw;
+  align-items: center;
+}
+
 .some-page-wrapper {
   margin-top: 200px;
   margin-left: 300px;
 }
-  
+ 
+.frame19-footer {
+  padding: 0.7vw 1vw 0.7vw 1vw;
+}
+
 .row {
     display: flex;
     flex-direction: row;
