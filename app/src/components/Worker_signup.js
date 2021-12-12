@@ -21,7 +21,6 @@ export default function WorkerSignup({setError}) {
         event.preventDefault();
         try {
             let uid = await registerWithEmailAndPassword('worker', fullName, position, email, password);
-            console.log('UID: ', uid);
             // TODO: upload photo to backend
             let fileFormData = new FormData();
             fileFormData.append("student-id", uid);

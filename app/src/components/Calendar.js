@@ -52,10 +52,10 @@ const Calendar = (props) => {
         if(data !== undefined && data !== null && data[current_day_str] !== undefined && data[current_day_str] !== null && i % 7 < 5 && (!dayoffs || (dayoffs && !dayoffs[current_day_str])) ){
             //day found at attendance
             if(data[current_day_str].time !== "" && data[current_day_str].time !== undefined && data[current_day_str].time <= starting_time){
-                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "onTime", mood: data[current_day_str].mood});
+                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "onTime", mood: data[current_day_str].mood, photo: data[current_day_str].photo});
             }
             else if(data[current_day_str].time !== "" && data[current_day_str].time !== undefined){
-                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "late", mood: data[current_day_str].mood});
+                days.push({date: current_day.getDate(), time: data[current_day_str].time, status: "late", mood: data[current_day_str].mood, photo: data[current_day_str].photo});
             }
             else{
                 days.push({date: current_day.getDate(), time: "", status: "absent", reason: data[current_day_str].reason, current_day: current_day_str, reasonResponse: data[current_day_str].reason_response});
@@ -106,7 +106,8 @@ const Calendar = (props) => {
     for(let i = 0; i < 5; i++){
         let week = days.slice(i*7, i*7+7).map((today) => 
         <th className='cell' onClick={() => {
-            setDayData({day: today.date, time: today.time, mood: today.mood, id: id, current_day: today.current_day});
+            console.log('today: ', today);
+            setDayData({day: today.date, time: today.time, mood: today.mood, photo: today.photo, id: id, current_day: today.current_day});
             (today.status==='absent') ? handleRedOpen() :
             ((today.status === 'onTime' || today.status==='late') ? handleGreenOpen() : handleWhiteOpen())}}>
             <Day day={today.date} time={today.time} status={today.status} reason={today.reason} reasonResponse={today.reasonResponse}/>

@@ -41,7 +41,7 @@ const Worker = ({uid, workers, dayoffs, additionalInfo}) => {
     )
     const greenDayPopup = (dayData, close) => 
         (dayData !== undefined) ?  
-        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood} workerName={workers[uid].name} workerPhoto={workers[uid].photo} />)
+        (<Frame19 day={dayData.day} month={month_names[(month-1)%12]} time={dayData.time} mood={dayData.mood} photo={dayData.photo} workerName={workers[uid].name} workerPhoto={workers[uid].photo} />)
         :
         (<Frame19 day="error" month={month_names[(month-1)%12]} time="error" workerName={workers[uid].name} workerPhoto={workers[uid].photo}/>)
     
